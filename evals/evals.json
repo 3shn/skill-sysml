@@ -1,0 +1,44 @@
+{
+  "skill_name": "sysml-copilot",
+  "evals": [
+    {
+      "id": 0,
+      "name": "greenfield-drone-propulsion",
+      "prompt": "I'm starting a small electric drone project. Can you model the propulsion subsystem in SysML v2? It has a brushless motor, a LiPo battery, and a propeller. Capture each as a part with sensible engineering attributes — at least mass for all three, plus power draw for the motor and stored energy for the battery. Save it to drone_propulsion.sysml.",
+      "expected_output": "A valid .sysml file with a package containing part defs for Motor, Battery, Propeller (and likely a PropulsionSubsystem composing them), with mass/power/energy attributes typed by real ISQ quantity value types. Compiles with zero errors.",
+      "files": [],
+      "assertions": [
+        {"text": "The produced .sysml file compiles with zero ERROR diagnostics (validate_sysml_file ok=true)"},
+        {"text": "Quantity/unit references use real standard-library qualified names (e.g. ISQ/ISQBase/SI/ScalarValues), with no invented names like ISQ::weight or SI::kgs"},
+        {"text": "Contains at least three part defs covering motor, battery, and propeller"},
+        {"text": "Mass is represented for all three parts; motor has a power attribute and battery has an energy attribute"}
+      ]
+    },
+    {
+      "id": 1,
+      "name": "requirements-battery-spec",
+      "prompt": "Turn this battery spec into a SysML v2 requirements model: the battery's usable energy shall be at least 500 Wh, and its mass shall not exceed 2 kg. I want proper requirement definitions with a Battery subject and the limits expressed as constraints with the correct units, so we can later check a design against them.",
+      "expected_output": "A valid .sysml file with requirement defs that declare a subject (a Battery part), express the energy and mass limits as require/assume constraints using SI units, and reference real ISQ quantity types. Compiles clean.",
+      "files": [],
+      "assertions": [
+        {"text": "The produced .sysml file compiles with zero ERROR diagnostics"},
+        {"text": "Uses requirement def with a declared subject (the compiler does not flag 'Subject must be first parameter')"},
+        {"text": "Energy and mass limits are expressed as constraints with unit literals using real SI units (e.g. value[Wh-equivalent] and value[kg]/SI::kg)"},
+        {"text": "References real ISQ/SI qualified names, not invented ones"}
+      ]
+    },
+    {
+      "id": 2,
+      "name": "audit-and-fix-broken-model",
+      "prompt": "Something's off with our vehicle model and it won't load in our tool. Can you check sysml/evals/fixtures/broken_vehicle.sysml, tell me exactly what's wrong, and give me a corrected version that's valid?",
+      "expected_output": "Correctly identifies the two defects — the 'part deff' keyword typo (syntax) and the invented 'ISQ::weight' reference (should be ISQ::mass) — explains them with locations, and produces a corrected model that compiles clean.",
+      "files": ["sysml/evals/fixtures/broken_vehicle.sysml"],
+      "assertions": [
+        {"text": "Identifies the 'part deff' typo as a syntax error and corrects it to 'part def'"},
+        {"text": "Identifies that ISQ::weight does not resolve and corrects it to a real quantity (ISQ::mass / ISQBase::mass)"},
+        {"text": "The corrected model compiles with zero ERROR diagnostics"},
+        {"text": "Explanation references concrete locations/messages rather than vague guesses"}
+      ]
+    }
+  ]
+}

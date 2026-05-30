@@ -1,0 +1,4 @@
+interface:
+  display_name: "SysML v2 Co-Pilot"
+  short_description: "Author and validate SysML v2 models with a real compiler"
+  default_prompt: "Use $sysml-copilot to model this system in SysML v2: ground every type and unit in the standard library with query_library, then validate with validate_sysml_file and self-correct until it compiles clean."
