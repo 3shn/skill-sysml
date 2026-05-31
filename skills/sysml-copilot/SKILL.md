@@ -9,7 +9,9 @@ description: >-
   .sysml valid?", or "audit our system model" — even when the user doesn't say "SysML". Authors
   valid textual SysML v2, grounds every type/unit in the standard library instead of inventing
   them, and validates with the real SysML v2 compiler in a self-correcting loop so the output
-  actually compiles.
+  actually compiles. Not for: SysML v1 or Cameo/MagicDraw tooling; writing or reviewing program
+  code that merely parses or processes `.sysml` files; UML diagrams; or summarizing/wrangling
+  requirements documents (DOORS, spreadsheets) that aren't themselves SysML models.
 ---
 
 # SysML v2 Co-Pilot

@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "sysml": {
-      "command": "/home/u/.nix-profile/bin/python3",
+      "command": "python3",
       "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-server/server.py"],
       "env": {
         "SYSML_LIBRARY_PATH": "/home/u/gh/Systems-Modeling/SysML-v2-Release/sysml.library",

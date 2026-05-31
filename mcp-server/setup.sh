@@ -14,6 +14,10 @@ CLASSES="${SYSML_VALIDATOR_CLASSES:-$HERE/java/classes}"
 
 command -v java >/dev/null  || { echo "ERROR: java 21+ required"; exit 1; }
 command -v javac >/dev/null || { echo "ERROR: javac 21+ required"; exit 1; }
+# The .mcp.json launches the stdlib-only server with bare `python3` (PATH-resolved, machine-agnostic:
+# works on Ubuntu/NixOS/containers/macOS, and self-heals interpreter migrations). Verify it exists.
+command -v python3 >/dev/null || { echo "ERROR: python3 (>=3.10) required on PATH to run the MCP server"; exit 1; }
+echo "Using python3: $(command -v python3) ($(python3 --version 2>&1))"
 
 if [[ ! -f "$JAR" ]]; then
   echo "Kernel jar not found at: $JAR"
