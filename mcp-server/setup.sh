@@ -41,7 +41,7 @@ fi
 
 echo "Compiling validator server -> $CLASSES"
 mkdir -p "$CLASSES"
-javac -cp "$JAR" -d "$CLASSES" "$HERE/java/SysmlValidatorServer.java"
+javac -cp "$JAR" -d "$CLASSES" $(find "$HERE/java" -name "*.java")
 
 # The MCP server (server.py) is stdlib-only — no Python deps to install. The plugin's .mcp.json
 # launches it with a system python3 directly, so startup is instant and offline. Nothing more to do.

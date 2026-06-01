@@ -36,7 +36,7 @@ from library_index import LibraryIndex
 
 HERE = Path(__file__).resolve().parent
 PROTOCOL_VERSION = "2024-11-05"
-SERVER_INFO = {"name": "sysml", "version": "0.1.0"}
+SERVER_INFO = {"name": "sysml", "version": "0.2.0"}
 
 
 def _env_path(name: str, default: str) -> str:
@@ -112,6 +112,18 @@ class _Validator:
                 raise RuntimeError("validator process died during validation")
             return json.loads(line)
 
+    def dump(self, target_path: str, context_paths: list[str]) -> dict:
+        with self._lock:
+            if not self._alive():
+                self._start()
+            self._proc.stdin.write("DUMP\t" + "\t".join([target_path, *context_paths]) + "\n")
+            self._proc.stdin.flush()
+            line = self._proc.stdout.readline()
+            if line == "":
+                self._proc = None
+                raise RuntimeError("validator process died during dump")
+            return json.loads(line)
+
 
 _validator = _Validator()
 
@@ -138,6 +150,33 @@ def validate_sysml_file(content=None, path=None, context_paths=None) -> dict:
                     "code": "bad-request", "syntax": False, "message": "Provide either 'content' or 'path'."}]}
         ctx = [os.path.abspath(os.path.expanduser(p)) for p in context_paths]
         return _validator.validate(target, ctx)
+    finally:
+        if tmp is not None:
+            try:
+                os.unlink(tmp.name)
+            except OSError:
+                pass
+
+
+def dump_model(content=None, path=None, context_paths=None) -> dict:
+    context_paths = context_paths or []
+    tmp = None
+    try:
+        if content is not None:
+            tmp = tempfile.NamedTemporaryFile(mode="w", suffix=".sysml", delete=False, encoding="utf-8")
+            tmp.write(content)
+            tmp.close()
+            target = tmp.name
+        elif path is not None:
+            target = os.path.abspath(os.path.expanduser(path))
+            if not os.path.isfile(target):
+                return {"ok": False, "diagnostics": [{"line": 0, "column": 0, "severity": "ERROR",
+                        "code": "no-such-file", "syntax": False, "message": f"File not found: {target}"}]}
+        else:
+            return {"ok": False, "diagnostics": [{"line": 0, "column": 0, "severity": "ERROR",
+                    "code": "bad-request", "syntax": False, "message": "Provide either 'content' or 'path'."}]}
+        ctx = [os.path.abspath(os.path.expanduser(p)) for p in context_paths]
+        return _validator.dump(target, ctx)
     finally:
         if tmp is not None:
             try:
@@ -204,11 +243,30 @@ TOOLS = [
             "required": ["qualified_name"],
         },
     },
+    {
+        "name": "dump_model",
+        "description": (
+            "Parse a SysML v2 model and return its AST as a structured JSON array of elements. "
+            "Provide either `content` (raw .sysml text) or `path` (an existing .sysml file). "
+            "`context_paths` lists sibling .sysml files the model imports. "
+            "Returns {ok, elements:[...]} on success, or {ok, diagnostics:[...]} if there are parse errors."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "content": {"type": "string", "description": "Raw .sysml source text"},
+                "path": {"type": "string", "description": "Path to an existing .sysml file"},
+                "context_paths": {"type": "array", "items": {"type": "string"},
+                                  "description": "Sibling .sysml files the model depends on"},
+            },
+        },
+    },
 ]
 _DISPATCH = {
     "validate_sysml_file": validate_sysml_file,
     "query_library": query_library,
     "get_library_element": get_library_element,
+    "dump_model": dump_model,
 }
 
 

@@ -2,6 +2,10 @@ import org.omg.sysml.interactive.SysMLInteractive;
 import org.omg.sysml.interactive.SysMLInteractiveResult;
 import org.eclipse.xtext.validation.Issue;
 
+import org.omg.sysml.util.traversal.facade.impl.SafeJsonFacade;
+import org.omg.sysml.util.traversal.Traversal;
+import com.google.gson.Gson;
+
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -45,7 +49,11 @@ public class SysmlValidatorServer {
             if (line.isEmpty()) continue;
             if (line.equals("__QUIT__")) break;
             try {
-                realOut.println(handle(sysml, line));
+                if (line.startsWith("DUMP\t")) {
+                    realOut.println(handleDump(sysml, line.substring(5)));
+                } else {
+                    realOut.println(handle(sysml, line));
+                }
             } catch (Exception e) {
                 realOut.println("{\"ok\":false,\"diagnostics\":[{\"line\":0,\"column\":0,"
                     + "\"severity\":\"ERROR\",\"code\":\"server-error\",\"syntax\":false,"
@@ -98,6 +106,51 @@ public class SysmlValidatorServer {
         }
         sb.append("]}");
         return sb.toString();
+    }
+
+    private static String handleDump(SysMLInteractive sysml, String line) throws IOException {
+        String[] paths = line.split("\t");
+        String target = new String(Files.readAllBytes(Paths.get(paths[0])), "UTF-8");
+        int targetLines = countLines(target);
+
+        StringBuilder combined = new StringBuilder(target);
+        for (int i = 1; i < paths.length; i++) {
+            if (paths[i].isEmpty()) continue;
+            combined.append("\n// ---8<--- context: ").append(paths[i]).append("\n");
+            combined.append(new String(Files.readAllBytes(Paths.get(paths[i])), "UTF-8"));
+        }
+
+        SysMLInteractiveResult result = sysml.process(combined.toString(), false);
+
+        boolean ok = true;
+        if (result.getException() != null) {
+            ok = false;
+        } else {
+            for (Issue is : result.getIssues()) {
+                Integer ln = is.getLineNumber();
+                if (paths.length > 1 && ln != null && ln > targetLines) continue;
+                if ("ERROR".equals(String.valueOf(is.getSeverity()))) {
+                    ok = false;
+                    break;
+                }
+            }
+        }
+
+        if (!ok) {
+            return handle(sysml, line);
+        }
+
+        try {
+            SafeJsonFacade facade = new SafeJsonFacade();
+            Traversal traversal = new Traversal(facade);
+            traversal.visit(result.getRootElement());
+            com.google.gson.JsonElement jsonElement = facade.toJsonTree(true);
+            return "{\"ok\":true,\"elements\":" + new Gson().toJson(jsonElement) + "}";
+        } catch (Exception e) {
+            return "{\"ok\":false,\"diagnostics\":[{\"line\":0,\"column\":0,"
+                + "\"severity\":\"ERROR\",\"code\":\"server-error\",\"syntax\":false,"
+                + "\"message\":\"" + esc(String.valueOf(e.getMessage())) + "\"}]}";
+        }
     }
 
     private static int countLines(String s) {

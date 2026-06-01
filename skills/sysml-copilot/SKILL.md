@@ -28,6 +28,7 @@ This skill is backed by the bundled `sysml` MCP server, which provides three too
 - **`query_library`** — finds real standard-library elements by name/keyword (e.g. `mass` →
   `ISQBase::mass`, `newton` → `SI::newton`, `Real` → `ScalarValues::Real`).
 - **`get_library_element`** — returns the declaration of a specific qualified name.
+- **`dump_model`** — parses a model and returns its AST as a structured JSON array of elements. `{ok, elements:[...]}`.
 
 If these tools are not available, the MCP server isn't running — tell the user to enable the
 `sysml` plugin (and run `mcp-server/setup.sh` if it's a first install) rather than guessing at
