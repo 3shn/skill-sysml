@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sysml-cli"
+version = "0.3.0"
+description = "Headless sysml dump CLI"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+sysml = "sysml_mcp.cli:main"
+
+[tool.setuptools]
+package-dir = {"sysml_mcp" = "mcp-server"}
+packages = ["sysml_mcp"]
+
+[tool.setuptools.package-data]
+sysml_mcp = ["java/*", "java/**/*", "setup.sh"]

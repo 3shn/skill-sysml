@@ -94,3 +94,25 @@ wants the fixes applied. For a file that's part of a multi-file project, pass it
 - `references/examples/` — validated example models (parts, ports, items, actions, requirements).
 - `references/SysML-textual-bnf.kebnf` — the authoritative textual grammar; consult for edge cases
   the syntax reference doesn't cover.
+
+## CI Integration
+
+To run headless SysML commands (like `sysml dump`) in a CI environment (e.g., GitHub Actions) without the Claude runtime, use the provided Python CLI:
+
+```yaml
+- name: Checkout standard library
+  uses: actions/checkout@v4
+  with:
+    repository: Systems-Modeling/SysML-v2-Release
+    path: sysml-v2-release
+
+- name: Install sysml CLI
+  run: pip install git+https://github.com/3shn/skills.git#subdirectory=sysml
+
+- name: Setup & Dump
+  run: |
+    export SYSML_LIBRARY_PATH=$PWD/sysml-v2-release/sysml.library
+    export SYSML_KERNEL_JAR=$HOME/.cache/sysml/jupyter-sysml-kernel-0.59.0-all.jar
+    sysml setup
+    sysml dump model/requirements_vjv2024.sysml --context model/contexts.sysml --context model/verification.sysml --context model/contracts.sysml -o dump.json
+```
