@@ -2,3 +2,4 @@
 __pycache__/
 *.pyc
 mcp-server/java/classes/
+mcp-server/.runtime/

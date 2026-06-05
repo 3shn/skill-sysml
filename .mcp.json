@@ -2,11 +2,7 @@
   "mcpServers": {
     "sysml": {
       "command": "python3",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-server/server.py"],
-      "env": {
-        "SYSML_LIBRARY_PATH": "/home/u/gh/Systems-Modeling/SysML-v2-Release/sysml.library",
-        "SYSML_KERNEL_JAR": "/home/u/gh/3shn/skills/SysML_v2/runtime/sysml/jupyter-sysml-kernel-0.59.0-all.jar"
-      }
+      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-server/server.py"]
     }
   }
 }

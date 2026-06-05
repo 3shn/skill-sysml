@@ -27,14 +27,21 @@ sysml-mcp = "sysml_mcp.server:main"  # the MCP server
 Install it so `sysml-mcp` is on PATH:
 
 ```bash
-pipx install /home/u/gh/3shn/skills/sysml      # or: uvx --from /home/u/gh/3shn/skills/sysml sysml-mcp
+pipx install <path-to-this-plugin>      # or: uvx --from <path-to-this-plugin> sysml-mcp
 ```
 
-Two env vars point at the resources (run `mcp-server/setup.sh` to provision them; needs Java):
-- `SYSML_LIBRARY_PATH` → the SysML v2 standard-library checkout
-- `SYSML_KERNEL_JAR`   → the jupyter-sysml-kernel jar
+Then provision the compiler + standard library (one-time, needs Java 21+; downloads ~120 MB):
 
-(Skip packaging? Substitute `command: python3`, `args: ["/home/u/gh/3shn/skills/sysml/mcp-server/server.py"]`
+```bash
+bash <path-to-this-plugin>/mcp-server/setup.sh
+```
+
+`setup.sh` fetches the SysML v2 Pilot kernel jar and the standard library into a plugin-local
+`mcp-server/.runtime/` and compiles the validator. The server finds them there by default — **no
+environment variables required**. (Override only for a custom resource location via
+`SYSML_LIBRARY_PATH` / `SYSML_KERNEL_JAR`.)
+
+(Skip packaging? Substitute `command: python3`, `args: ["<path-to-this-plugin>/mcp-server/server.py"]`
 everywhere below — works locally, just not path-portable.)
 
 ## Step 2 — per-agent config
@@ -47,24 +54,22 @@ everywhere below — works locally, just not path-portable.)
 {
   "mcpServers": {
     "sysml": {
-      "command": "sysml-mcp",
-      "env": {
-        "SYSML_LIBRARY_PATH": "/home/u/gh/Systems-Modeling/SysML-v2-Release/sysml.library",
-        "SYSML_KERNEL_JAR": "/home/u/gh/3shn/skills/SysML_v2/runtime/sysml/jupyter-sysml-kernel-0.59.0-all.jar"
-      }
+      "command": "sysml-mcp"
     }
   }
 }
 ```
+
+(After `setup.sh`, no `env` block is needed — the server resolves resources from
+`mcp-server/.runtime/`. Add `SYSML_LIBRARY_PATH` / `SYSML_KERNEL_JAR` only to override.)
 
 **Codex CLI** — `~/.codex/config.toml` (or project `.codex/config.toml`):
 
 ```toml
 [mcp_servers.sysml]
 command = "sysml-mcp"
-env = { SYSML_LIBRARY_PATH = "…/sysml.library", SYSML_KERNEL_JAR = "…/jupyter-sysml-kernel-0.59.0-all.jar" }
 ```
-or: `codex mcp add sysml --env SYSML_LIBRARY_PATH=… --env SYSML_KERNEL_JAR=… -- sysml-mcp`
+or: `codex mcp add sysml -- sysml-mcp` (env vars only needed to override the `.runtime/` defaults)
 
 **OpenCode** — `opencode.json` (project root) or `~/.config/opencode/opencode.json`:
 
@@ -74,11 +79,7 @@ or: `codex mcp add sysml --env SYSML_LIBRARY_PATH=… --env SYSML_KERNEL_JAR=…
     "sysml": {
       "type": "local",
       "command": ["sysml-mcp"],
-      "enabled": true,
-      "environment": {
-        "SYSML_LIBRARY_PATH": "…/sysml.library",
-        "SYSML_KERNEL_JAR": "…/jupyter-sysml-kernel-0.59.0-all.jar"
-      }
+      "enabled": true
     }
   }
 }

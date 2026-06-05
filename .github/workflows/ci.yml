@@ -1,0 +1,43 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  toolchain-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Provision resources + compile validator
+        run: bash mcp-server/setup.sh
+
+      - name: Smoke-test the validator (good passes, broken fails)
+        run: |
+          cd mcp-server
+          python3 - <<'PY'
+          import sys
+          sys.path.insert(0, ".")
+          from server import validate_sysml_file
+
+          good = validate_sysml_file(path="../test.sysml")
+          assert good.get("ok") is True, f"expected test.sysml to validate, got: {good}"
+
+          broken = validate_sysml_file(path="../evals/fixtures/broken_vehicle.sysml")
+          assert broken.get("ok") is False, f"expected broken_vehicle.sysml to fail, got: {broken}"
+
+          print("OK: validator accepts valid SysML and rejects the broken fixture.")
+          PY

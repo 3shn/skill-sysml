@@ -36,17 +36,20 @@ from library_index import LibraryIndex
 
 HERE = Path(__file__).resolve().parent
 PROTOCOL_VERSION = "2024-11-05"
-SERVER_INFO = {"name": "sysml", "version": "0.2.0"}
+SERVER_INFO = {"name": "sysml", "version": "0.3.0"}
 
 
 def _env_path(name: str, default: str) -> str:
     return os.path.expanduser(os.environ.get(name, default))
 
 
-LIBRARY_PATH = _env_path("SYSML_LIBRARY_PATH",
-                         "~/gh/Systems-Modeling/SysML-v2-Release/sysml.library")
+# Resources are provisioned into a plugin-local `.runtime/` by mcp-server/setup.sh, so the
+# defaults are machine-agnostic (relative to this file, not anyone's home dir). The env vars
+# still override for custom installs / CI.
+RUNTIME = HERE / ".runtime"
+LIBRARY_PATH = _env_path("SYSML_LIBRARY_PATH", str(RUNTIME / "sysml.library"))
 KERNEL_JAR = _env_path("SYSML_KERNEL_JAR",
-                       "~/gh/3shn/skills/SysML_v2/runtime/sysml/jupyter-sysml-kernel-0.59.0-all.jar")
+                       str(RUNTIME / "jupyter-sysml-kernel-0.59.0-all.jar"))
 CLASSES_DIR = _env_path("SYSML_VALIDATOR_CLASSES", str(HERE / "java" / "classes"))
 
 
