@@ -12,6 +12,7 @@ dependencies = []
 
 [project.scripts]
 sysml = "sysml_mcp.cli:main"
+sysml-mcp = "sysml_mcp.server:main"   # path-stable MCP server launch (any agent; see INSTALL.md)
 
 [tool.setuptools]
 package-dir = {"sysml_mcp" = "mcp-server"}
