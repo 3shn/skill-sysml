@@ -134,8 +134,16 @@ _validator = _Validator()
 # ---------------------------------------------------------------------------
 # Tool implementations
 # ---------------------------------------------------------------------------
+def _check_path(path: str) -> str | None:
+    if not path.isprintable():
+        return f"Path contains invalid control characters: {repr(path)}"
+    return None
+
 def validate_sysml_file(content=None, path=None, context_paths=None) -> dict:
     context_paths = context_paths or []
+    for p in ([path] if path is not None else []) + context_paths:
+        if err := _check_path(p):
+            return {"ok": False, "diagnostics": [{"line": 0, "column": 0, "severity": "ERROR", "code": "invalid-path", "syntax": False, "message": err}]}
     tmp = None
     try:
         if content is not None:
@@ -163,6 +171,9 @@ def validate_sysml_file(content=None, path=None, context_paths=None) -> dict:
 
 def dump_model(content=None, path=None, context_paths=None) -> dict:
     context_paths = context_paths or []
+    for p in ([path] if path is not None else []) + context_paths:
+        if err := _check_path(p):
+            return {"ok": False, "diagnostics": [{"line": 0, "column": 0, "severity": "ERROR", "code": "invalid-path", "syntax": False, "message": err}]}
     tmp = None
     try:
         if content is not None:
