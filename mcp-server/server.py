@@ -135,6 +135,8 @@ _validator = _Validator()
 # Tool implementations
 # ---------------------------------------------------------------------------
 def _check_path(path: str) -> str | None:
+    if not isinstance(path, str):
+        return f"Path must be a string, got {type(path).__name__}"
     if not path.isprintable():
         return f"Path contains invalid control characters: {repr(path)}"
     return None
