@@ -1,8 +1,7 @@
 {
   "name": "3shn-sysml",
   "owner": {
-    "name": "yushen (3shn)",
-    "email": "yushen83@gmail.com"
+    "name": "yushen (3shn)"
   },
   "metadata": {
     "description": "SysML v2 systems-engineering tooling for Claude Code.",
@@ -10,13 +9,12 @@
   },
   "plugins": [
     {
-      "name": "sysml",
+      "name": "sysml-copilot",
       "source": "./",
       "description": "AI-native SysML v2 co-pilot: authors valid textual SysML v2 (.sysml), grounds every type/unit in the standard library (ISQ, SI, …), and validates with the real SysML v2 Pilot compiler in a self-correcting loop. Bundles an MCP server (validate_sysml_file, query_library, get_library_element, dump_model).",
       "version": "0.4.0",
       "author": {
-        "name": "yushen (3shn)",
-        "email": "yushen83@gmail.com"
+        "name": "yushen (3shn)"
       },
       "license": "MIT",
       "category": "development",
