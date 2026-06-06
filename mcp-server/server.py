@@ -142,7 +142,10 @@ def _check_path(path: str) -> str | None:
     return None
 
 def validate_sysml_file(content=None, path=None, context_paths=None) -> dict:
-    context_paths = context_paths or []
+    if context_paths is None:
+        context_paths = []
+    elif not isinstance(context_paths, list):
+        return {"ok": False, "diagnostics": [{"line": 0, "column": 0, "severity": "ERROR", "code": "bad-request", "syntax": False, "message": "context_paths must be a list."}]}
     for p in ([path] if path is not None else []) + context_paths:
         if err := _check_path(p):
             return {"ok": False, "diagnostics": [{"line": 0, "column": 0, "severity": "ERROR", "code": "invalid-path", "syntax": False, "message": err}]}
