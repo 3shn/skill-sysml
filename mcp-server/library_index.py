@@ -139,7 +139,12 @@ class LibraryIndex:
         e = self._by_qname.get(qualified_name)
         if e is None:
             # tolerate lookups by bare name if unambiguous
-            cands = [x for x in self.elements if x.name.strip("'") == qualified_name.strip("'")]
+            if not hasattr(self, "_by_bare_name"):
+                self._by_bare_name = {}
+                for x in self.elements:
+                    self._by_bare_name.setdefault(x.name.strip("'"), []).append(x)
+            target_name = qualified_name.strip("'")
+            cands = self._by_bare_name.get(target_name, [])
             if len(cands) == 1:
                 e = cands[0]
         return _with_excerpt(self, e, excerpt_lines=20) if e else None
