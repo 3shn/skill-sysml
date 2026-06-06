@@ -107,7 +107,7 @@ To run headless SysML commands (like `sysml dump`) in a CI environment (e.g., Gi
     path: sysml-v2-release
 
 - name: Install sysml CLI
-  run: pip install git+https://github.com/3shn/skills.git#subdirectory=sysml
+  run: pip install git+https://github.com/3shn/skill-sysml.git
 
 - name: Setup & Dump
   run: |

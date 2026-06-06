@@ -62,10 +62,7 @@ part — a validated, self-correcting MCP toolchain over the real Pilot compiler
 
 3. ~~**Standard library is not auto-provisioned.**~~ Done. `setup.sh` clones it natively.
 
-4. **No marketplace manifest / distribution channel decided.** Anthropic plugin marketplaces are
-   git repos with a `.claude-plugin/marketplace.json` listing plugins. Decide: stand up your own
-   marketplace repo (e.g. `3shn/claude-plugins`) with this listed, or submit to an existing one.
-   Add the `marketplace.json` entry + install instructions.
+4. ~~**No marketplace manifest / distribution channel decided.**~~ Done. Submitted via the official Anthropic form.
 
 ## P1 (should fix — quality/credibility)
 
