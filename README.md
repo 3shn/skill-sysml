@@ -12,7 +12,7 @@ sysml/
 ├── .mcp.json                      # declares the `sysml` MCP server
 ├── skills/sysml-copilot/          # the co-pilot skill (SKILL.md + references + examples)
 └── mcp-server/                    # the MCP server (validate + library introspection)
-    ├── server.py                  # stdio MCP server (run via `uv run`)
+    ├── server.py                  # stdio MCP server (run via `python3`)
     ├── library_index.py           # name→element index over the standard library
     ├── java/SysmlValidatorServer.java   # warm Pilot-kernel validator (stdin/stdout JSON)
     └── setup.sh                   # downloads the kernel jar + compiles the validator
@@ -27,8 +27,7 @@ sysml/
 ## Prerequisites & setup
 
 - **Java 21+** and a **python3 (>=3.10)** on `PATH`. The MCP server is **stdlib-only** — no Python
-  dependencies to install, no venv, no `uv`. (`uv` is only needed by `setup.sh` if it has to download
-  the kernel jar via `gh`.)
+  dependencies to install, no venv, no `uv`.
 - The SysML v2 standard library (clone `Systems-Modeling/SysML-v2-Release`).
 - The Pilot kernel fat jar (downloaded automatically by `setup.sh`).
 
@@ -37,21 +36,19 @@ sysml/
 mcp-server/setup.sh
 ```
 
-Configure paths via env (defaults shown), e.g. in `.mcp.json` or your shell:
+Configure paths via env if you need to override the defaults (which land in plugin-local `.runtime/`):
 
-```
-SYSML_LIBRARY_PATH=~/gh/Systems-Modeling/SysML-v2-Release/sysml.library
-SYSML_KERNEL_JAR=~/gh/3shn/skills/SysML_v2/runtime/sysml/jupyter-sysml-kernel-0.59.0-all.jar
+```bash
+SYSML_LIBRARY_PATH=mcp-server/.runtime/sysml.library
+SYSML_KERNEL_JAR=mcp-server/.runtime/jupyter-sysml-kernel-0.59.0-all.jar
 ```
 
 ## Launch configuration (`.mcp.json`)
 
 The MCP server is **stdlib-only** and launched directly by a system `python3` (no venv, no `uv` — those
-caused handshake timeouts `-32000` when deps were resolved at launch). For an **in-place `@skills-dir`
-plugin**, `${CLAUDE_PLUGIN_ROOT}` is *not* substituted, so `.mcp.json` uses **absolute paths**
-(`command` = an absolute `python3`, `args` = `[…/mcp-server/server.py]`, absolute `env`). If you instead
-install via a **marketplace** (copied into the plugin cache), `${CLAUDE_PLUGIN_ROOT}` *is* populated —
-switch command/args/env to `${CLAUDE_PLUGIN_ROOT}`-relative paths for portability.
+caused handshake timeouts `-32000` when deps were resolved at launch). The `.mcp.json` uses
+`${CLAUDE_PLUGIN_ROOT}`-relative paths so the plugin is portable and works immediately after
+running `setup.sh`.
 
 Run `mcp-server/setup.sh` once (downloads the kernel jar if missing, compiles the Java validator),
 launch Claude Code from the repo root, then `/reload-plugins` and verify `/plugin` shows `sysml`

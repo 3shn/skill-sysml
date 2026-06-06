@@ -4,7 +4,7 @@
   "version": "0.3.0",
   "description": "AI-native SysML v2 systems-engineering co-pilot. Authors valid textual SysML v2 (.sysml), grounds every type/unit in the standard library (ISQ, SI, …), and validates with the real SysML v2 Pilot compiler in a self-correcting loop. Bundles an MCP server (validate_sysml_file, query_library, get_library_element).",
   "author": {
-    "name": "yushen",
+    "name": "Yu Shen",
     "email": "yushen83@gmail.com"
   },
   "keywords": ["sysml", "sysml-v2", "mbse", "systems-engineering", "kerml", "modeling", "requirements"]
