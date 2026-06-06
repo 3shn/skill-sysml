@@ -1,0 +1,36 @@
+name: OOB Marketplace Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test-oob-installation:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Initialize Plugin Dependencies (setup.sh)
+        run: |
+          ./mcp-server/setup.sh
+          
+      - name: Verify OOB MCP Server Startup
+        run: |
+          chmod +x ./tests/test_mcp_startup.py
+          ./tests/test_mcp_startup.py

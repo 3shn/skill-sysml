@@ -16,6 +16,7 @@ LIBRARY_PATH="${SYSML_LIBRARY_PATH:-$RUNTIME/sysml.library}"
 CLASSES="${SYSML_VALIDATOR_CLASSES:-$HERE/java/classes}"
 PILOT_REPO="Systems-Modeling/SysML-v2-Pilot-Implementation"
 LIBRARY_REPO="Systems-Modeling/SysML-v2-Release"
+LIBRARY_COMMIT="${SYSML_LIBRARY_COMMIT:-9baca5908ca28b53da085de69336fde48420ea8f}"
 
 for tool in java javac python3 curl git unzip; do
   command -v "$tool" >/dev/null || { echo "ERROR: '$tool' required on PATH"; exit 1; }
@@ -37,9 +38,10 @@ echo "Kernel jar: $JAR"
 
 # 2. Standard library — shallow clone of the Release repo, copy the sysml.library subtree.
 if [[ ! -d "$LIBRARY_PATH" ]]; then
-  echo "Provisioning SysML v2 standard library (shallow clone of ${LIBRARY_REPO})..."
+  echo "Provisioning SysML v2 standard library (pinned to ${LIBRARY_COMMIT})..."
   tmpdir="$(mktemp -d)"
-  git clone --depth 1 "https://github.com/${LIBRARY_REPO}.git" "$tmpdir/release"
+  git clone "https://github.com/${LIBRARY_REPO}.git" "$tmpdir/release"
+  git -C "$tmpdir/release" checkout "$LIBRARY_COMMIT"
   cp -r "$tmpdir/release/sysml.library" "$LIBRARY_PATH"
   rm -rf "$tmpdir"
 fi

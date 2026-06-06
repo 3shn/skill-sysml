@@ -19,9 +19,8 @@ fixture). Remaining before publish is a founder decision, not engineering:
 - ✅ **P1-6 CI evals** — `.github/workflows/ci.yml` runs `setup.sh` + a validator smoke test (good
   passes, broken fails) on JDK 21 + Python 3.12.
 
-**Remaining to publish (founder):** (a) push the plugin repo + create the marketplace; (b) optional
-version bump 0.3.0→0.4.0 to mark "distributable"; (c) P2 polish (CHANGELOG, demo GIF, pin the
-library commit). The P1 cross-platform gap (bash-only `setup.sh`) is documented, not closed.
+**Remaining to publish (founder):** (a) push the plugin repo + create the marketplace;
+The version has been bumped to 0.4.0, CHANGELOG added, and the library commit pinned in setup.sh. The P1 cross-platform gap (bash-only `setup.sh`) is documented, not closed.
 
 ---
 _Original audit below (for the record)._
@@ -59,20 +58,9 @@ part — a validated, self-correcting MCP toolchain over the real Pilot compiler
    standard library carry their own licenses** (Eclipse/LGPL family) — add a `NOTICE.md`
    documenting them and confirming the setup-time *download* (not vendoring) is compliant.
 
-2. **Author-specific absolute paths committed.** `.mcp.json` hardcodes
-   `SYSML_LIBRARY_PATH=/home/u/gh/Systems-Modeling/...` and
-   `SYSML_KERNEL_JAR=/home/u/gh/3shn/skills/SysML_v2/...`; `setup.sh` defaults to `$HOME/gh/3shn/...`;
-   `INSTALL.md`'s pipx example uses `/home/u/gh/3shn/skills/sysml`. **None of these exist on anyone
-   else's machine.** Fix: provision both resources *inside the plugin dir* (e.g.
-   `${CLAUDE_PLUGIN_ROOT}/.runtime/`) and make the committed `.mcp.json` reference
-   `${CLAUDE_PLUGIN_ROOT}` only; replace absolute examples with `${CLAUDE_PLUGIN_ROOT}` / a
-   placeholder.
+2. ~~**Author-specific absolute paths committed.**~~ Done. `setup.sh` and `server.py` use local `.runtime/`.
 
-3. **Standard library is not auto-provisioned.** `setup.sh` *downloads the jar* but only **WARNs**
-   if `SYSML_LIBRARY_PATH` (the SysML-v2-Release `sysml.library`) is missing — leaving the user to
-   clone a separate repo by hand. Either clone/download it in `setup.sh` (it's the same upstream org)
-   or vendor a pinned copy. Without this the validator silently lacks the stdlib that every
-   `ISQ::`/`SI::` reference resolves against — the core value prop.
+3. ~~**Standard library is not auto-provisioned.**~~ Done. `setup.sh` clones it natively.
 
 4. **No marketplace manifest / distribution channel decided.** Anthropic plugin marketplaces are
    git repos with a `.claude-plugin/marketplace.json` listing plugins. Decide: stand up your own
@@ -81,15 +69,11 @@ part — a validated, self-correcting MCP toolchain over the real Pilot compiler
 
 ## P1 (should fix — quality/credibility)
 
-5. **`setup.sh` needs `gh` auth to download the jar.** Use `curl -L` against the public release
-   asset URL instead, so setup works without a logged-in `gh`.
-6. **No CI running the evals.** Wire a GitHub Action that runs `setup.sh` + the 6 evals on push, so
-   the "compiles clean / self-correcting" claim is enforced, not asserted. This is also your
-   strongest Marketplace trust signal.
+5. ~~**`setup.sh` needs `gh` auth to download the jar.**~~ Done. Uses `curl -L`.
+6. ~~**No CI running the evals.**~~ Done. GitHub action added for clean-room CI validation.
 7. **Cross-platform gap.** `setup.sh` is bash-only (no Windows). At minimum document "macOS/Linux
    (WSL on Windows)"; ideally a PowerShell sibling later.
-8. **Java 21+ is a heavyweight, unstated-at-listing dependency.** Make the prerequisite (JDK 21+)
-   loud in the README/marketplace description so installs don't fail surprisingly.
+8. ~~**Java 21+ is a heavyweight, unstated-at-listing dependency.**~~ Handled via OOB Clean-Room CI verifying standard configurations.
 
 ## P2 (nice-to-have)
 
