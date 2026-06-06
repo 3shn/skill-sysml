@@ -71,8 +71,8 @@ class LibraryIndex:
                 self._index_file(path)
         for e in self.elements:
             # First definition wins for a given qualified name.
-            self._by_qname.setdefault(e.qualified_name, e)
-            self._searchable_elements.append((e.name.strip("'").lower(), e.qualified_name.lower(), e))
+            if self._by_qname.setdefault(e.qualified_name, e) is e:
+                self._searchable_elements.append((e.name.strip("'").lower(), e.qualified_name.lower(), e))
         return self
 
     def _index_file(self, path: Path) -> None:
