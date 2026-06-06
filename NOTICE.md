@@ -1,7 +1,7 @@
 # NOTICE
 
 This plugin (the MCP server, skill, CLI, and Java validator wrapper in this repository) is
-licensed under the MIT License — see `LICENSE`. Copyright (c) 2026 yushen (3shn).
+licensed under the MIT License — see `LICENSE`. Copyright (c) 2026 Yu Shen.
 
 ## Third-party components (downloaded at setup time, not redistributed)
 
