@@ -39,8 +39,8 @@ mcp-server/setup.sh
 Configure paths via env if you need to override the defaults (which land in plugin-local `.runtime/`):
 
 ```bash
-SYSML_LIBRARY_PATH=mcp-server/.runtime/sysml.library
-SYSML_KERNEL_JAR=mcp-server/.runtime/jupyter-sysml-kernel-0.59.0-all.jar
+SYSML_LIBRARY_PATH=${CLAUDE_PLUGIN_ROOT}/mcp-server/.runtime/sysml.library
+SYSML_KERNEL_JAR=${CLAUDE_PLUGIN_ROOT}/mcp-server/.runtime/jupyter-sysml-kernel-0.59.0-all.jar
 ```
 
 ## Launch configuration (`.mcp.json`)
