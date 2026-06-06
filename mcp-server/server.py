@@ -91,7 +91,7 @@ class _Validator:
         env = dict(os.environ, SYSML_LIBRARY_PATH=LIBRARY_PATH)
         self._proc = subprocess.Popen(
             ["java", "-cp", f"{CLASSES_DIR}{os.pathsep}{KERNEL_JAR}", "SysmlValidatorServer"],
-            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=sys.stderr,
             env=env, text=True, bufsize=1)
         while True:
             line = self._proc.stdout.readline()
