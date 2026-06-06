@@ -55,9 +55,13 @@ public class SysmlValidatorServer {
                     realOut.println(handle(sysml, line));
                 }
             } catch (Exception e) {
+                String errorId = UUID.randomUUID().toString();
+                System.err.println("Internal server error [" + errorId + "]:");
+                e.printStackTrace(System.err);
+
                 realOut.println("{\"ok\":false,\"diagnostics\":[{\"line\":0,\"column\":0,"
                     + "\"severity\":\"ERROR\",\"code\":\"server-error\",\"syntax\":false,"
-                    + "\"message\":\"" + esc(String.valueOf(e.getMessage())) + "\"}]}");
+                    + "\"message\":\"Internal server error. Reference ID: " + errorId + "\"}]}");
             }
             realOut.flush();
         }
@@ -147,9 +151,13 @@ public class SysmlValidatorServer {
             com.google.gson.JsonElement jsonElement = facade.toJsonTree(true);
             return "{\"ok\":true,\"elements\":" + new Gson().toJson(jsonElement) + "}";
         } catch (Exception e) {
+            String errorId = UUID.randomUUID().toString();
+            System.err.println("Internal server error [" + errorId + "]:");
+            e.printStackTrace(System.err);
+
             return "{\"ok\":false,\"diagnostics\":[{\"line\":0,\"column\":0,"
                 + "\"severity\":\"ERROR\",\"code\":\"server-error\",\"syntax\":false,"
-                + "\"message\":\"" + esc(String.valueOf(e.getMessage())) + "\"}]}";
+                + "\"message\":\"Internal server error. Reference ID: " + errorId + "\"}]}";
         }
     }
 
