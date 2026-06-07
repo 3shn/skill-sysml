@@ -114,5 +114,5 @@ To run headless SysML commands (like `sysml dump`) in a CI environment (e.g., Gi
     export SYSML_LIBRARY_PATH=$PWD/sysml-v2-release/sysml.library
     export SYSML_KERNEL_JAR=$HOME/.cache/sysml/jupyter-sysml-kernel-0.59.0-all.jar
     sysml setup
-    sysml dump model/requirements_vjv2024.sysml --context model/contexts.sysml --context model/verification.sysml --context model/contracts.sysml -o dump.json
+    sysml dump model/requirements.sysml --context model/contexts.sysml --context model/verification.sysml --context model/contracts.sysml -o dump.json
 ```

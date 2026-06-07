@@ -94,7 +94,6 @@ def run_dump(args):
         
     # The JSON must match byte-for-byte with the original dump_model output,
     # but dump_model itself returns a dict. We serialize it similarly.
-    # Actually, EconVPP uses generate_records.py which loads the JSON.
     out = json.dumps(result, indent=2, sort_keys=True)
     
     if args.output:
