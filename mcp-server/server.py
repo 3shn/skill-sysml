@@ -36,7 +36,7 @@ from library_index import LibraryIndex
 
 HERE = Path(__file__).resolve().parent
 PROTOCOL_VERSION = "2024-11-05"
-SERVER_INFO = {"name": "sysml", "version": "0.3.0"}
+SERVER_INFO = {"name": "sysml", "version": "0.4.0"}
 
 
 def _env_path(name: str, default: str) -> str:
@@ -198,13 +198,231 @@ def dump_model(content=None, path=None, context_paths=None) -> dict:
             return {"ok": False, "diagnostics": [{"line": 0, "column": 0, "severity": "ERROR",
                     "code": "bad-request", "syntax": False, "message": "Provide either 'content' or 'path'."}]}
         ctx = [os.path.abspath(os.path.expanduser(p)) for p in context_paths]
-        return _validator.dump(target, ctx)
+        res = _validator.dump(target, ctx)
+        if res.get("ok") and "elements" in res:
+            res["elements"] = _reduce_ast(res["elements"])
+        return res
     finally:
         if tmp is not None:
             try:
                 os.unlink(tmp.name)
             except OSError:
                 pass
+
+
+def _reduce_ast(elements_list):
+    by_id = {}
+    for entry in elements_list:
+        payload = entry.get("payload")
+        if payload and "@id" in payload:
+            by_id[payload["@id"]] = payload
+
+    def get_qualified_name(elem):
+        if not elem: return None
+        names = []
+        curr = elem
+        while curr:
+            if curr.get("declaredName"):
+                names.append(curr.get("declaredName"))
+            elif curr.get("declaredShortName"):
+                names.append(curr.get("declaredShortName"))
+            elif curr.get("@type") == "Package" and curr.get("name"):
+                 names.append(curr.get("name"))
+
+            owner_ref = curr.get("owner")
+            if owner_ref and "@id" in owner_ref:
+                curr = by_id.get(owner_ref["@id"])
+            elif curr.get("owningRelationship") and "@id" in curr.get("owningRelationship"):
+                rel = by_id.get(curr["owningRelationship"]["@id"])
+                if rel and rel.get("owner") and "@id" in rel["owner"]:
+                     curr = by_id.get(rel["owner"]["@id"])
+                elif rel and rel.get("owningRelatedElement") and "@id" in rel["owningRelatedElement"]:
+                     curr = by_id.get(rel["owningRelatedElement"]["@id"])
+                else:
+                     curr = None
+            else:
+                curr = None
+        if not names:
+            return None
+        return "::".join(reversed(names))
+
+    def expr_to_text(elem):
+        if not elem: return ""
+        typ = elem.get("@type")
+        if typ == "LiteralString": return f'"{elem.get("value", "")}"'
+        if typ in ("LiteralInteger", "LiteralReal"): return str(elem.get("value", ""))
+        if typ == "LiteralBoolean": return str(elem.get("value", "")).lower()
+        if typ == "FeatureReferenceExpression":
+            return get_qualified_name(elem) or "<ref>"
+        if typ == "OperatorExpression":
+            op = elem.get("operator", "")
+            rels = [by_id.get(r["@id"]) for r in elem.get("ownedRelationship", []) if r.get("@id")]
+            ops = []
+            for rel in rels:
+                if rel and rel.get("ownedRelatedElement"):
+                    for oe in rel.get("ownedRelatedElement", []):
+                        child = by_id.get(oe.get("@id"))
+                        if child: ops.append(expr_to_text(child))
+            if op: return f"({f' {op} '.join(ops)})" if len(ops) > 1 else f"{op}{ops[0] if ops else ''}"
+            return "".join(ops)
+        return ""
+
+    docs_by_owner = {}
+    attr_by_owner = {}
+    subjects_by_req = {}
+    constraints_by_req = {}
+    targets_by_verify = {}
+    satisfy_edges = []
+    verify_edges = []
+    specialization_edges = []
+
+    for eid, elem in by_id.items():
+        typ = elem.get("@type")
+        if typ == "Documentation":
+            owner_ref = elem.get("owner")
+            if owner_ref and "@id" in owner_ref:
+                docs_by_owner[owner_ref["@id"]] = elem.get("body", "")
+        
+        elif typ == "SubjectMembership":
+            owner_ref = elem.get("owner")
+            if owner_ref and "@id" in owner_ref:
+                owned_ref = elem.get("ownedRelatedElement", [])
+                for o in owned_ref:
+                    tgt = by_id.get(o.get("@id"))
+                    if tgt: subjects_by_req.setdefault(owner_ref["@id"], []).append(get_qualified_name(tgt))
+                    
+        elif typ == "RequirementConstraintMembership":
+            owner_ref = elem.get("owner")
+            if owner_ref and "@id" in owner_ref:
+                owned_ref = elem.get("ownedRelatedElement", [])
+                for o in owned_ref:
+                    tgt = by_id.get(o.get("@id"))
+                    if tgt:
+                        constraints_by_req.setdefault(owner_ref["@id"], []).append({
+                            "kind": elem.get("kind", "require"),
+                            "text": expr_to_text(tgt) or "<constraint>"
+                        })
+
+        elif typ == "SatisfyRequirementUsage":
+            src = elem.get("source", [])
+            tgt = elem.get("target", [])
+            if src and tgt:
+                s_elem = by_id.get(src[0].get("@id"))
+                t_elem = by_id.get(tgt[0].get("@id"))
+                if s_elem and t_elem:
+                    satisfy_edges.append({
+                        "source": get_qualified_name(s_elem),
+                        "target": get_qualified_name(t_elem)
+                    })
+
+        elif typ == "VerifyRequirementUsage":
+            src = elem.get("source", [])
+            tgt = elem.get("target", [])
+            if src and tgt:
+                s_elem = by_id.get(src[0].get("@id"))
+                t_elem = by_id.get(tgt[0].get("@id"))
+                if s_elem and t_elem:
+                    verify_edges.append({
+                        "source": get_qualified_name(s_elem),
+                        "target": get_qualified_name(t_elem)
+                    })
+                    
+        elif typ == "Subclassification":
+            src = elem.get("source", [])
+            tgt = elem.get("target", [])
+            if src and tgt:
+                s_elem = by_id.get(src[0].get("@id"))
+                t_elem = by_id.get(tgt[0].get("@id"))
+                if s_elem and t_elem:
+                    specialization_edges.append({
+                        "source": get_qualified_name(s_elem),
+                        "target": get_qualified_name(t_elem)
+                    })
+
+        elif typ in ("LiteralString", "LiteralInteger", "LiteralReal", "LiteralBoolean"):
+            rel_ref = elem.get("owningRelationship")
+            if rel_ref and "@id" in rel_ref:
+                rel = by_id.get(rel_ref["@id"])
+                if rel and rel.get("@type") == "FeatureMembership":
+                    name = rel.get("memberName") or rel.get("declaredName") or elem.get("declaredName")
+                    if name:
+                        owner_ref = rel.get("owner")
+                        if owner_ref and "@id" in owner_ref:
+                            attr_by_owner.setdefault(owner_ref["@id"], []).append({
+                                "name": name,
+                                "value": elem.get("value"),
+                                "unit": "extracted_via_sysml" # Simplification for literal bound units
+                            })
+
+    reduced = []
+    for eid, elem in by_id.items():
+        if elem.get("isLibraryElement", False):
+            continue
+            
+        metatype = elem.get("@type")
+        if metatype not in (
+            "RequirementDefinition", "RequirementUsage", 
+            "PartDefinition", "PortDefinition",
+            "VerificationCaseDefinition", "AttributeUsage", "ConstraintUsage",
+            "Package", "ActionDefinition", "ItemDefinition", "StateDefinition"
+        ):
+            continue
+
+        out = {
+            "id": eid,
+            "metatype": metatype,
+            "declaredName": elem.get("declaredName"),
+            "declaredShortName": elem.get("declaredShortName"),
+            "qualifiedName": get_qualified_name(elem),
+        }
+
+        if eid in docs_by_owner:
+            out["documentation"] = docs_by_owner[eid]
+        
+        if eid in attr_by_owner:
+            out["attributes"] = attr_by_owner[eid]
+
+        if metatype in ("RequirementDefinition", "RequirementUsage"):
+            if eid in subjects_by_req:
+                out["subjects"] = subjects_by_req[eid]
+            if eid in constraints_by_req:
+                out["constraints"] = constraints_by_req[eid]
+        
+        # Determine nesting from owner
+        owner_ref = elem.get("owner")
+        if owner_ref and "@id" in owner_ref:
+            out["ownerId"] = owner_ref["@id"]
+            
+        reduced.append(out)
+
+    # Rebuild nesting
+    nested_by_id = {e["id"]: e for e in reduced}
+    top_level = []
+    for e in reduced:
+        owner_id = e.get("ownerId")
+        if owner_id and owner_id in nested_by_id:
+            parent = nested_by_id[owner_id]
+            parent.setdefault("ownedElements", []).append(e)
+        else:
+            top_level.append(e)
+            
+    # Clean up ownerId and id
+    def clean(node):
+        node.pop("ownerId", None)
+        node.pop("id", None)
+        for child in node.get("ownedElements", []):
+            clean(child)
+    for t in top_level:
+        clean(t)
+
+    return {
+        "nodes": top_level,
+        "relationships": {
+            "satisfy": satisfy_edges,
+            "verify": verify_edges,
+            "specialization": specialization_edges
+        }
+    }
 
 
 def query_library(query: str, limit: int = 25) -> list:
