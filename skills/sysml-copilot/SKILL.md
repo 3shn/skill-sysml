@@ -78,6 +78,8 @@ line/column and a plain-language explanation of each. Offer to fix them; only ed
 wants the fixes applied. For a file that's part of a multi-file project, pass its siblings as
 `context_paths` so you report real errors, not isolation artifacts.
 
+**Note on clean validations:** If a model compiles cleanly with 0 diagnostics, DO NOT simply report "0 diagnostics" as that is obscure compiler-speak. Instead, explicitly summarize the rigorous semantic checks the compiler just performed to reach that conclusion (e.g., verifying Standard Library Grounding, Physics/Unit Conformance, and Linker/Cross-Reference Resolution).
+
 ## Why these rules matter
 
 - **Grounding before authoring** turns "the model looks right" into "the model references things
