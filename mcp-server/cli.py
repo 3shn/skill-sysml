@@ -111,7 +111,7 @@ def run_dump(args):
     """
     Invokes the dump_model logic to export the SysML model as JSON.
     """
-    result = dump_model(path=args.file, context_paths=args.context)
+    result = dump_model(path=args.file, context_paths=args.context, raw=args.raw)
     
     if not result.get("ok", False):
         print("Parse error(s) occurred:", file=sys.stderr)
@@ -141,6 +141,11 @@ def main():
     dump_p.add_argument("file", help="SysML file to dump")
     dump_p.add_argument("--context", action="append", default=[], help="Context SysML files")
     dump_p.add_argument("-o", "--output", help="Output JSON file")
+    dump_p.add_argument("--raw", action="store_true",
+                        help="Emit the UNREDUCED kernel AST (full OMG SysML v2 API JSON: "
+                             "elements:[{payload}]) instead of the agent-facing "
+                             "{nodes, relationships} summary. Use for byte-for-byte "
+                             "model->artifact round-trip generation.")
     
     args = parser.parse_args()
     

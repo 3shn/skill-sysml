@@ -36,7 +36,7 @@ from library_index import LibraryIndex
 
 HERE = Path(__file__).resolve().parent
 PROTOCOL_VERSION = "2024-11-05"
-SERVER_INFO = {"name": "sysml", "version": "0.4.1"}
+SERVER_INFO = {"name": "sysml", "version": "0.4.2"}
 
 
 def _env_path(name: str, default: str) -> str:
@@ -178,7 +178,7 @@ def validate_sysml_file(content=None, path=None, context_paths=None) -> dict:
                 pass
 
 
-def dump_model(content=None, path=None, context_paths=None) -> dict:
+def dump_model(content=None, path=None, context_paths=None, raw=False) -> dict:
     if context_paths is None:
         context_paths = []
     elif not isinstance(context_paths, list):
@@ -203,7 +203,12 @@ def dump_model(content=None, path=None, context_paths=None) -> dict:
                     "code": "bad-request", "syntax": False, "message": "Provide either 'content' or 'path'."}]}
         ctx = [os.path.abspath(os.path.expanduser(p)) for p in context_paths]
         res = _validator.dump(target, ctx)
-        if res.get("ok") and "elements" in res:
+        # Default: summarise the AST for agent reasoning (see _reduce_ast). raw=True
+        # returns the UNREDUCED kernel AST — the full OMG SysML v2 API JSON
+        # (`elements: [{payload}]`) — for fidelity consumers (e.g. byte-for-byte
+        # model->artifact round-trip generation) that need reqId, units, and the
+        # ownership graph the summary drops.
+        if not raw and res.get("ok") and "elements" in res:
             res["elements"] = _reduce_ast(res["elements"])
         return res
     finally:
