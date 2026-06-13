@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.4.1] - 2026-06-13
+### Fixed
+- `sysml setup` (the pip/CI provisioner) now matches `setup.sh`: it compiles the
+  **whole** `java/` tree (not just `SysmlValidatorServer.java`), so the sibling
+  `SafeJsonFacade.java` resolves instead of failing with `cannot find symbol`.
+- `sysml setup` now also provisions the SysML v2 **standard library** (pinned
+  clone of the Release repo). The kernel jar does not bundle it, so without this
+  `sysml dump`/validate could not resolve `Requirements::`/`ISQ::`/… and emitted
+  "must specialize Requirements::RequirementCheck" errors. `setup` is now a
+  complete, `gh`-free provisioner equivalent to `setup.sh`.
+
 ## [0.4.0] - 2026-06-06
 ### Added
 - Portable multi-agent install (sysml-mcp entrypoint + INSTALL.md)
