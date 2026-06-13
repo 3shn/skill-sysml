@@ -3,3 +3,7 @@ __pycache__/
 *.pyc
 mcp-server/java/classes/
 mcp-server/.runtime/
+
+# Python build artifacts
+build/
+*.egg-info/

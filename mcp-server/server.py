@@ -36,7 +36,7 @@ from library_index import LibraryIndex
 
 HERE = Path(__file__).resolve().parent
 PROTOCOL_VERSION = "2024-11-05"
-SERVER_INFO = {"name": "sysml", "version": "0.4.0"}
+SERVER_INFO = {"name": "sysml", "version": "0.4.1"}
 
 
 def _env_path(name: str, default: str) -> str:
@@ -82,8 +82,12 @@ class _Validator:
         if (Path(CLASSES_DIR) / "SysmlValidatorServer.class").exists():
             return
         Path(CLASSES_DIR).mkdir(parents=True, exist_ok=True)
-        subprocess.run(["javac", "-cp", KERNEL_JAR, "-d", CLASSES_DIR,
-                        str(HERE / "java" / "SysmlValidatorServer.java")],
+        # Compile the whole java/ tree, not just the entry point: SysmlValidatorServer
+        # depends on sibling sources (org/omg/.../SafeJsonFacade.java) that are NOT in the
+        # kernel jar, so javac must see them on the command line — otherwise it fails with
+        # "cannot find symbol: class SafeJsonFacade". Mirrors setup.sh's find-all-java.
+        java_srcs = sorted(str(p) for p in (HERE / "java").rglob("*.java"))
+        subprocess.run(["javac", "-cp", KERNEL_JAR, "-d", CLASSES_DIR, *java_srcs],
                        check=True, capture_output=True, text=True)
 
     def _start(self) -> None:

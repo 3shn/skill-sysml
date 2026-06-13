@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import shutil
 import sys
 import tempfile
 import urllib.request
@@ -10,11 +11,11 @@ from pathlib import Path
 
 # When installed as a package, we are sysml_mcp.cli. When run directly, we might need sys.path adjustments.
 try:
-    from sysml_mcp.server import dump_model, _validator, HERE, KERNEL_JAR
+    from sysml_mcp.server import dump_model, _validator, HERE, KERNEL_JAR, LIBRARY_PATH
 except ImportError:
     # If not installed via pip, assume we are in mcp-server
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from server import dump_model, _validator, HERE, KERNEL_JAR
+    from server import dump_model, _validator, HERE, KERNEL_JAR, LIBRARY_PATH
 
 
 def run_setup():
@@ -58,6 +59,33 @@ def run_setup():
                     sys.exit(1)
     else:
         print(f"Kernel jar already exists at: {jar_path}")
+
+    # 1b. Provision the SysML v2 standard library. The kernel jar does NOT bundle it, so
+    # without this `sysml dump`/validate can't resolve library types (Requirements::,
+    # ISQ::, …) and emit "must specialize Requirements::RequirementCheck" errors. Mirrors
+    # setup.sh: shallow-clone the Release repo pinned to a commit, copy the sysml.library
+    # subtree. Pure git (already required for pip-from-git installs); no `gh`.
+    library_path = Path(LIBRARY_PATH).expanduser().resolve()
+    library_repo = os.environ.get(
+        "SYSML_LIBRARY_REPO", "https://github.com/Systems-Modeling/SysML-v2-Release.git")
+    library_commit = os.environ.get(
+        "SYSML_LIBRARY_COMMIT", "9baca5908ca28b53da085de69336fde48420ea8f")
+    if not library_path.exists():
+        print(f"Provisioning SysML standard library (pinned {library_commit[:10]})...")
+        library_path.parent.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            rel = Path(tmpdir) / "release"
+            try:
+                subprocess.run(["git", "clone", "--quiet", library_repo, str(rel)], check=True)
+                subprocess.run(["git", "-C", str(rel), "checkout", "--quiet", library_commit],
+                               check=True)
+            except (subprocess.CalledProcessError, FileNotFoundError) as e:
+                print(f"ERROR: Failed to provision the SysML standard library.\n{e}",
+                      file=sys.stderr)
+                sys.exit(1)
+            shutil.copytree(rel / "sysml.library", library_path)
+    else:
+        print(f"Standard library already exists at: {library_path}")
 
     # 2. Compile the warm validator server
     print("Compiling Java validator server...")
