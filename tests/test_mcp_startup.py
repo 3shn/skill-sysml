@@ -16,6 +16,7 @@ def main():
     config = json.loads(mcp_config.read_text())
     server = config["mcpServers"]["sysml"]
     command = [server["command"], *server.get("args", [])]
+    cwd = root_dir / server.get("cwd", ".")
     print(f"Starting MCP server through {mcp_config}...")
     
     # We clear the specific env vars to simulate an OOB user
@@ -25,7 +26,9 @@ def main():
     env.pop("SYSML_LIBRARY_PATH", None)
     env.pop("SYSML_KERNEL_JAR", None)
     env.pop("SYSML_VALIDATOR_CLASSES", None)
-    env["CLAUDE_PLUGIN_ROOT"] = str(root_dir)
+    # Codex does not provide Claude's plugin-root variable. The plugin config
+    # must therefore start successfully from its declared working directory.
+    env.pop("CLAUDE_PLUGIN_ROOT", None)
 
     proc = subprocess.Popen(
         command,
@@ -34,7 +37,8 @@ def main():
         stderr=subprocess.PIPE,
         text=True,
         bufsize=1,
-        env=env
+        env=env,
+        cwd=cwd,
     )
 
     def send_request(req):

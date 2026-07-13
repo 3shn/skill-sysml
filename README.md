@@ -45,9 +45,10 @@ SYSML_RUNTIME=$HOME/.cache/sysml-copilot/0.59.0
 ## Launch configuration (`.mcp.json`)
 
 The MCP server is **stdlib-only** and launched directly by a system `python3` (no venv, no `uv` — those
-caused handshake timeouts `-32000` when deps were resolved at launch). The `.mcp.json` uses a small
-`sh -c` launcher so `$CLAUDE_PLUGIN_ROOT` is expanded by both Claude Code and Codex. Codex does not
-interpolate that variable when it appears directly in an MCP argument array.
+caused handshake timeouts `-32000` when deps were resolved at launch). The `.mcp.json` declares the
+plugin root as its working directory and uses a small `sh -c` launcher. Claude Code supplies
+`$CLAUDE_PLUGIN_ROOT`; Codex does not, so the launcher falls back to `$PWD`. The startup test removes
+the Claude variable and exercises this Codex path explicitly.
 
 Run `mcp-server/setup.sh` once (downloads the kernel jar if missing, compiles the Java validator),
 launch Claude Code from the repo root, then `/reload-plugins` and verify `/plugin` shows `sysml`

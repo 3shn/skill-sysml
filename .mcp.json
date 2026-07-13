@@ -2,7 +2,8 @@
   "mcpServers": {
     "sysml": {
       "command": "sh",
-      "args": ["-c", "exec python3 \"$CLAUDE_PLUGIN_ROOT/mcp-server/server.py\""]
+      "args": ["-c", "exec python3 \"${CLAUDE_PLUGIN_ROOT:-$PWD}/mcp-server/server.py\""],
+      "cwd": "."
     }
   }
 }
