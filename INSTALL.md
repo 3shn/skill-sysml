@@ -36,10 +36,12 @@ Then provision the compiler + standard library (one-time, needs Java 21+; downlo
 bash <path-to-this-plugin>/mcp-server/setup.sh
 ```
 
-`setup.sh` fetches the SysML v2 Pilot kernel jar and the standard library into a plugin-local
-`mcp-server/.runtime/` and compiles the validator. The server finds them there by default — **no
-environment variables required**. (Override only for a custom resource location via
-`SYSML_LIBRARY_PATH` / `SYSML_KERNEL_JAR`.)
+`setup.sh` fetches the SysML v2 Pilot kernel jar and standard library into the shared
+`~/.cache/sysml-copilot/0.59.0/` runtime and compiles the validator there. Claude Code, Codex,
+and other agents therefore use one provisioned runtime even though each host keeps a separate,
+disposable plugin cache. The server finds it automatically — **no environment variables
+required**. Override the root with `SYSML_RUNTIME`, or individual resources with
+`SYSML_LIBRARY_PATH` / `SYSML_KERNEL_JAR` / `SYSML_VALIDATOR_CLASSES`.
 
 (Skip packaging? Substitute `command: python3`, `args: ["<path-to-this-plugin>/mcp-server/server.py"]`
 everywhere below — works locally, just not path-portable.)
@@ -60,8 +62,8 @@ everywhere below — works locally, just not path-portable.)
 }
 ```
 
-(After `setup.sh`, no `env` block is needed — the server resolves resources from
-`mcp-server/.runtime/`. Add `SYSML_LIBRARY_PATH` / `SYSML_KERNEL_JAR` only to override.)
+(After `setup.sh`, no `env` block is needed — the server resolves resources from the shared
+cache. Add `SYSML_RUNTIME`, `SYSML_LIBRARY_PATH`, or `SYSML_KERNEL_JAR` only to override.)
 
 **Codex CLI** — `~/.codex/config.toml` (or project `.codex/config.toml`):
 
@@ -69,7 +71,7 @@ everywhere below — works locally, just not path-portable.)
 [mcp_servers.sysml]
 command = "sysml-mcp"
 ```
-or: `codex mcp add sysml -- sysml-mcp` (env vars only needed to override the `.runtime/` defaults)
+or: `codex mcp add sysml -- sysml-mcp` (env vars only needed to override the shared-cache defaults)
 
 **OpenCode** — `opencode.json` (project root) or `~/.config/opencode/opencode.json`:
 
