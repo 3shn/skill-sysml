@@ -8,12 +8,12 @@
 set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-RUNTIME="${SYSML_RUNTIME:-$HERE/.runtime}"
+RUNTIME="${SYSML_RUNTIME:-${XDG_CACHE_HOME:-$HOME/.cache}/sysml-copilot/0.59.0}"
 KERNEL_VERSION="${KERNEL_VERSION:-0.59.0}"
 KERNEL_RELEASE="${KERNEL_RELEASE:-2026-04}"
 JAR="${SYSML_KERNEL_JAR:-$RUNTIME/jupyter-sysml-kernel-${KERNEL_VERSION}-all.jar}"
 LIBRARY_PATH="${SYSML_LIBRARY_PATH:-$RUNTIME/sysml.library}"
-CLASSES="${SYSML_VALIDATOR_CLASSES:-$HERE/java/classes}"
+CLASSES="${SYSML_VALIDATOR_CLASSES:-$RUNTIME/validator-classes/0.4.2}"
 PILOT_REPO="Systems-Modeling/SysML-v2-Pilot-Implementation"
 LIBRARY_REPO="Systems-Modeling/SysML-v2-Release"
 LIBRARY_COMMIT="${SYSML_LIBRARY_COMMIT:-9baca5908ca28b53da085de69336fde48420ea8f}"

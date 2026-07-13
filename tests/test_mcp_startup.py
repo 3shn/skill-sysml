@@ -96,7 +96,7 @@ def main():
         }
     })
     resp = wait_for_response(3, timeout=30.0) # Library load can take a moment
-    if resp.get("isError") or "error" in resp:
+    if "error" in resp or resp.get("result", {}).get("isError"):
         print(f"Error during tools/call query_library: {resp}", file=sys.stderr)
         sys.exit(1)
     

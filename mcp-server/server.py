@@ -16,10 +16,11 @@ Tools exposed to the agent:
                           so the agent references existing types instead of inventing them.
   • get_library_element — fetch the declaration of a specific qualified name.
 
-Configuration (env, normally set by .mcp.json):
+Configuration (env, normally unnecessary):
   SYSML_LIBRARY_PATH      path to the sysml.library directory (Kernel/Systems/Domain Libraries)
   SYSML_KERNEL_JAR        path to jupyter-sysml-kernel-<ver>-all.jar (the Pilot fat jar)
-  SYSML_VALIDATOR_CLASSES path to compiled SysmlValidatorServer classes (default: ./java/classes)
+  SYSML_RUNTIME           shared runtime root (default: ~/.cache/sysml-copilot/0.59.0)
+  SYSML_VALIDATOR_CLASSES path to compiled validator classes
 """
 from __future__ import annotations
 
@@ -43,14 +44,15 @@ def _env_path(name: str, default: str) -> str:
     return os.path.expanduser(os.environ.get(name, default))
 
 
-# Resources are provisioned into a plugin-local `.runtime/` by mcp-server/setup.sh, so the
-# defaults are machine-agnostic (relative to this file, not anyone's home dir). The env vars
-# still override for custom installs / CI.
-RUNTIME = HERE / ".runtime"
+# Claude Code and Codex install plugins into different disposable cache directories. Keep
+# downloaded compiler resources in one agent-neutral cache so both hosts see the same runtime.
+# SYSML_RUNTIME remains the explicit override for hermetic CI and managed installations.
+_cache_home = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache"))
+RUNTIME = Path(_env_path("SYSML_RUNTIME", str(_cache_home / "sysml-copilot" / "0.59.0")))
 LIBRARY_PATH = _env_path("SYSML_LIBRARY_PATH", str(RUNTIME / "sysml.library"))
 KERNEL_JAR = _env_path("SYSML_KERNEL_JAR",
                        str(RUNTIME / "jupyter-sysml-kernel-0.59.0-all.jar"))
-CLASSES_DIR = _env_path("SYSML_VALIDATOR_CLASSES", str(HERE / "java" / "classes"))
+CLASSES_DIR = _env_path("SYSML_VALIDATOR_CLASSES", str(RUNTIME / "validator-classes" / "0.4.2"))
 
 
 def log(*a):
