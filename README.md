@@ -36,19 +36,18 @@ sysml/
 mcp-server/setup.sh
 ```
 
-Configure paths via env if you need to override the defaults (which land in plugin-local `.runtime/`):
+Configure paths via env only if you need to override the shared cache defaults:
 
 ```bash
-SYSML_LIBRARY_PATH=${CLAUDE_PLUGIN_ROOT}/mcp-server/.runtime/sysml.library
-SYSML_KERNEL_JAR=${CLAUDE_PLUGIN_ROOT}/mcp-server/.runtime/jupyter-sysml-kernel-0.59.0-all.jar
+SYSML_RUNTIME=$HOME/.cache/sysml-copilot/0.59.0
 ```
 
 ## Launch configuration (`.mcp.json`)
 
 The MCP server is **stdlib-only** and launched directly by a system `python3` (no venv, no `uv` — those
-caused handshake timeouts `-32000` when deps were resolved at launch). The `.mcp.json` uses
-`${CLAUDE_PLUGIN_ROOT}`-relative paths so the plugin is portable and works immediately after
-running `setup.sh`.
+caused handshake timeouts `-32000` when deps were resolved at launch). The `.mcp.json` uses a small
+`sh -c` launcher so `$CLAUDE_PLUGIN_ROOT` is expanded by both Claude Code and Codex. Codex does not
+interpolate that variable when it appears directly in an MCP argument array.
 
 Run `mcp-server/setup.sh` once (downloads the kernel jar if missing, compiles the Java validator),
 launch Claude Code from the repo root, then `/reload-plugins` and verify `/plugin` shows `sysml`

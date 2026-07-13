@@ -7,13 +7,16 @@ from pathlib import Path
 
 def main():
     root_dir = Path(__file__).resolve().parent.parent
-    server_script = root_dir / "mcp-server" / "server.py"
+    mcp_config = root_dir / ".mcp.json"
 
-    if not server_script.exists():
-        print(f"Error: Could not find {server_script}", file=sys.stderr)
+    if not mcp_config.exists():
+        print(f"Error: Could not find {mcp_config}", file=sys.stderr)
         sys.exit(1)
 
-    print(f"Starting MCP server at {server_script}...")
+    config = json.loads(mcp_config.read_text())
+    server = config["mcpServers"]["sysml"]
+    command = [server["command"], *server.get("args", [])]
+    print(f"Starting MCP server through {mcp_config}...")
     
     # We clear the specific env vars to simulate an OOB user
     # who hasn't explicitly set SYSML_LIBRARY_PATH etc.
@@ -22,9 +25,10 @@ def main():
     env.pop("SYSML_LIBRARY_PATH", None)
     env.pop("SYSML_KERNEL_JAR", None)
     env.pop("SYSML_VALIDATOR_CLASSES", None)
+    env["CLAUDE_PLUGIN_ROOT"] = str(root_dir)
 
     proc = subprocess.Popen(
-        [sys.executable, str(server_script)],
+        command,
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
