@@ -45,7 +45,7 @@ def library_ready(result):
                for item in items)
 
 
-def main(response_timeout=10.0):
+def main(response_timeout=None):
     root_dir = Path(__file__).resolve().parent.parent
     config_path = root_dir / '.mcp.json'
     proc = None
@@ -71,7 +71,10 @@ def main(response_timeout=10.0):
                     print(f'-> {json.dumps(message)}')
                     proc.stdin.write((json.dumps(message) + '\n').encode())
                     proc.stdin.flush()
-                    deadline = time.monotonic() + response_timeout
+                    timeout = response_timeout
+                    if timeout is None:
+                        timeout = 30.0 if method == 'tools/call' else 10.0
+                    deadline = time.monotonic() + timeout
                     while True:
                         if b'\n' not in buffered:
                             remaining = deadline - time.monotonic()
