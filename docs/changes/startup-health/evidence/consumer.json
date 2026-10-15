@@ -1,7 +1,7 @@
 {
   "toolchain_commit": "314cf082972adc723915ea5190cb79400d99bb94",
   "toolchain_source_sha256": "a353f9cdb408e1ab86a7d5837df1d62f0d90ffcc838b106f41c9e93ea5ff6d99",
-  "startup_source_sha256": "cce11d25aa3304b35d3051441ddf68cdfcf32ec8aa38c1d9f8d569a586fa5aa0",
+  "startup_source_sha256": "756646946d46d2260971f4bc6e0f55de642df29cdd67ea9fba2764f5d414b118",
   "setup": "MOCKED_NOT_RUN",
   "startup": "REAL_EMPTY_LIBRARY_REJECTED",
   "rejected": true,

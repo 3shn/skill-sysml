@@ -1,8 +1,8 @@
 {
   "enabled_exit": 0,
   "disabled_exit": 1,
-  "enabled_source_sha256": "cce11d25aa3304b35d3051441ddf68cdfcf32ec8aa38c1d9f8d569a586fa5aa0",
-  "disabled_source_sha256": "38eb4e288170d1835fa0a4d3e05c35b6d69fc00d9dcb0af55a3b3301c20ad097",
+  "enabled_source_sha256": "756646946d46d2260971f4bc6e0f55de642df29cdd67ea9fba2764f5d414b118",
+  "disabled_source_sha256": "6470a0ccda41a8c797ddc568aa385e691b807d79e1a550dd64f2fac2e12db9e8",
   "replacement": {
     "before": "if not library_ready(result):",
     "after": "if False:  # MUTATION: disable exact-library predicate"

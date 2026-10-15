@@ -10,6 +10,6 @@ test_stderr_cannot_block_startup (test_startup_controls.StartupControls.test_std
 test_unrelated_nonempty_mass_hit_rejected (test_startup_controls.StartupControls.test_unrelated_nonempty_mass_hit_rejected) ... ok
 
 ----------------------------------------------------------------------
-Ran 10 tests in 1.779s
+Ran 10 tests in 1.672s
 
 OK
