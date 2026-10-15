@@ -1,0 +1,23 @@
+{
+  "source_commit": "08f4ede00cbb33fba59d92f28f6fbd9eef09f32e",
+  "runs": [
+    {
+      "id": 38729234949,
+      "name": "ci",
+      "head_sha": "08f4ede00cbb33fba59d92f28f6fbd9eef09f32e",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/3shn/skill-sysml/actions/runs/38729234949"
+    },
+    {
+      "id": 38729234896,
+      "name": "OOB Marketplace Test",
+      "head_sha": "08f4ede00cbb33fba59d92f28f6fbd9eef09f32e",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/3shn/skill-sysml/actions/runs/38729234896"
+    }
+  ],
+  "raw_logs": "NOT_RETRIEVED: API connector does not expose job logs; CLI redirect storage host rejected by current network policy",
+  "claim": "Provider workflow/job/step metadata inspected; no raw-log inspection claim"
+}

@@ -1,0 +1,28 @@
+{
+  "enabled_exit": 0,
+  "disabled_exit": 1,
+  "enabled_source_sha256": "756646946d46d2260971f4bc6e0f55de642df29cdd67ea9fba2764f5d414b118",
+  "disabled_source_sha256": "6470a0ccda41a8c797ddc568aa385e691b807d79e1a550dd64f2fac2e12db9e8",
+  "replacement": {
+    "before": "if not library_ready(result):",
+    "after": "if False:  # MUTATION: disable exact-library predicate"
+  },
+  "disabled_failures": [
+    "FAIL: test_child_reaped_after_success_and_rejection (test_startup_controls.StartupControls.test_child_reaped_after_success_and_rejection) (mode='empty')",
+    "FAIL: test_existing_empty_directory_rejected (test_startup_controls.StartupControls.test_existing_empty_directory_rejected)",
+    "FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='empty')",
+    "FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='unrelated')",
+    "FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='wrong-kind')",
+    "FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='wrong-declaration')",
+    "FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='malformed-item')",
+    "FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='invalid-json-text')",
+    "FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='missing-content')",
+    "FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='result-string')",
+    "FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='structured-only')",
+    "FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='is-error')",
+    "FAIL: test_missing_directory_rejected (test_startup_controls.StartupControls.test_missing_directory_rejected)",
+    "FAIL: test_unrelated_nonempty_mass_hit_rejected (test_startup_controls.StartupControls.test_unrelated_nonempty_mass_hit_rejected)",
+    "FAILED (failures=14)"
+  ],
+  "interpretation": "test assertions must detect disabled predicate; real compiler NOT_RUN"
+}

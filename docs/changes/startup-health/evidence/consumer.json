@@ -1,0 +1,15 @@
+{
+  "toolchain_commit": "314cf082972adc723915ea5190cb79400d99bb94",
+  "toolchain_source_sha256": "a353f9cdb408e1ab86a7d5837df1d62f0d90ffcc838b106f41c9e93ea5ff6d99",
+  "startup_source_sha256": "756646946d46d2260971f4bc6e0f55de642df29cdd67ea9fba2764f5d414b118",
+  "setup": "MOCKED_NOT_RUN",
+  "startup": "REAL_EMPTY_LIBRARY_REJECTED",
+  "rejected": true,
+  "wrapper_created": false,
+  "receipt_created": false,
+  "calls": [
+    "setup mocked, not executed",
+    "real startup check with check=True"
+  ],
+  "scope": "provision_sysml only; enclosing reconcile/install NOT_RUN; receipt noncreation is not a full install test"
+}

@@ -1,0 +1,17 @@
+{
+  "source_commit": "1f5edbf0ee661ec1258b9dd9fcb33d855f5e6660",
+  "startup_source_sha256": "756646946d46d2260971f4bc6e0f55de642df29cdd67ea9fba2764f5d414b118",
+  "commands": "startup regression, consumer and mutation probes repeated; actual full pinned-library startup repeated",
+  "files": {
+    "green.txt": "779ac00fd177cd77c76f82dec920c6356d8a8d712ac002e28bef282809b9ec9a",
+    "consumer.json": "36de72c54a4522e84c9a4acb440627dd28ab94a538b3f6abe7561108004b73e8",
+    "mutation.json": "aa1ce85394d70f55339ab7da1c124c145c8c27387048c4f617b0929a5553dc60",
+    "official-library.json": "e87ad82c7f158ef881193f30084a7f754698c1346b9650546e2f696f87069578"
+  },
+  "timeouts_seconds": {
+    "initialize": 10,
+    "tools_list": 10,
+    "library": 30
+  },
+  "scope": "MCP/index; compiler remains NOT_RUN locally"
+}

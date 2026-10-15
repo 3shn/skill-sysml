@@ -1,0 +1,350 @@
+test_child_reaped_after_success_and_rejection (test_startup_controls.StartupControls.test_child_reaped_after_success_and_rejection) ...
+  test_child_reaped_after_success_and_rejection (test_startup_controls.StartupControls.test_child_reaped_after_success_and_rejection) (mode='valid') ... FAIL
+  test_child_reaped_after_success_and_rejection (test_startup_controls.StartupControls.test_child_reaped_after_success_and_rejection) (mode='empty') ... FAIL
+  test_child_reaped_after_success_and_rejection (test_startup_controls.StartupControls.test_child_reaped_after_success_and_rejection) (mode='rpc-error') ... FAIL
+test_existing_empty_directory_rejected (test_startup_controls.StartupControls.test_existing_empty_directory_rejected) ... FAIL
+test_malformed_initialization_and_wire_rejected (test_startup_controls.StartupControls.test_malformed_initialization_and_wire_rejected) ...
+  test_malformed_initialization_and_wire_rejected (test_startup_controls.StartupControls.test_malformed_initialization_and_wire_rejected) (mode='bad-initialize') ... FAIL
+  test_malformed_initialization_and_wire_rejected (test_startup_controls.StartupControls.test_malformed_initialization_and_wire_rejected) (mode='malformed-wire') ... ERROR
+test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) ...
+  test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='empty') ... FAIL
+  test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='unrelated') ... FAIL
+  test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='wrong-kind') ... FAIL
+  test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='wrong-declaration') ... FAIL
+  test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='malformed-item') ... FAIL
+  test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='invalid-json-text') ... FAIL
+  test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='missing-content') ... FAIL
+  test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='structured-only') ... FAIL
+test_missing_directory_rejected (test_startup_controls.StartupControls.test_missing_directory_rejected) ... ok
+test_missing_expected_tool_rejected (test_startup_controls.StartupControls.test_missing_expected_tool_rejected) ... FAIL
+test_reference_element_index_fixture_passes_without_compiler_claim (test_startup_controls.StartupControls.test_reference_element_index_fixture_passes_without_compiler_claim) ... FAIL
+test_silent_and_partial_line_timeout_reaps_child (test_startup_controls.StartupControls.test_silent_and_partial_line_timeout_reaps_child) ...
+  test_silent_and_partial_line_timeout_reaps_child (test_startup_controls.StartupControls.test_silent_and_partial_line_timeout_reaps_child) (mode='silent') ... FAIL
+  test_silent_and_partial_line_timeout_reaps_child (test_startup_controls.StartupControls.test_silent_and_partial_line_timeout_reaps_child) (mode='partial') ... FAIL
+test_stderr_cannot_block_startup (test_startup_controls.StartupControls.test_stderr_cannot_block_startup) ... FAIL
+test_unrelated_nonempty_mass_hit_rejected (test_startup_controls.StartupControls.test_unrelated_nonempty_mass_hit_rejected) ... FAIL
+
+======================================================================
+ERROR: test_malformed_initialization_and_wire_rejected (test_startup_controls.StartupControls.test_malformed_initialization_and_wire_rejected) (mode='malformed-wire')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 87, in test_malformed_initialization_and_wire_rejected
+    self.assert_rejected(self.run_smoke(fake=mode))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 45, in run_smoke
+    return subprocess.run(argv, cwd=self.root, env=self.env, text=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 1209, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 2116, in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 1253, in _check_timeout
+    raise TimeoutExpired(
+subprocess.TimeoutExpired: Command '['/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3', '<TEMP>/tests/test_mcp_startup.py']' timed out after 5 seconds
+
+======================================================================
+FAIL: test_child_reaped_after_success_and_rejection (test_startup_controls.StartupControls.test_child_reaped_after_success_and_rejection) (mode='valid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 96, in test_child_reaped_after_success_and_rejection
+    with self.assertRaises(ProcessLookupError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ProcessLookupError not raised
+
+======================================================================
+FAIL: test_child_reaped_after_success_and_rejection (test_startup_controls.StartupControls.test_child_reaped_after_success_and_rejection) (mode='empty')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 93, in test_child_reaped_after_success_and_rejection
+    self.assertEqual(result.returncode, 0 if mode == 'valid' else 1,
+AssertionError: 0 != 1 : Starting MCP server through <TEMP>/.mcp.json...
+-> {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2024-11-05"}}
+<- {"jsonrpc": "2.0", "id": 1, "result": {"protocolVersion": "2024-11-05", "capabilities": {"tools": {}}, "serverInfo": {"name": "synthetic", "version": "0"}}}
+-> {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}
+Available tools: ['validate_sysml_file', 'query_library', 'get_library_element', 'dump_model']
+-> {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "query_library", "arguments": {"query": "mass"}}}
+<- {"jsonrpc": "2.0", "id": 3, "result": {"content": [{"type": "text", "text": "[]"}]}}
+
+SUCCESS: MCP server started, initialized, and resolved standard library OOB successfully!
+
+
+======================================================================
+FAIL: test_child_reaped_after_success_and_rejection (test_startup_controls.StartupControls.test_child_reaped_after_success_and_rejection) (mode='rpc-error')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 96, in test_child_reaped_after_success_and_rejection
+    with self.assertRaises(ProcessLookupError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ProcessLookupError not raised
+
+======================================================================
+FAIL: test_existing_empty_directory_rejected (test_startup_controls.StartupControls.test_existing_empty_directory_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 57, in test_existing_empty_directory_rejected
+    self.assert_rejected(self.run_smoke())
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 49, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+AssertionError: 0 != 1 : Starting MCP server through <TEMP>/.mcp.json...
+-> {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2024-11-05"}}
+<- {"jsonrpc": "2.0", "id": 1, "result": {"protocolVersion": "2024-11-05", "capabilities": {"tools": {}}, "serverInfo": {"name": "sysml", "version": "0.4.2"}}}
+-> {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}
+Available tools: ['validate_sysml_file', 'query_library', 'get_library_element', 'dump_model']
+-> {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "query_library", "arguments": {"query": "mass"}}}
+<- {"jsonrpc": "2.0", "id": 3, "result": {"content": [{"type": "text", "text": "[]"}]}}
+
+SUCCESS: MCP server started, initialized, and resolved standard library OOB successfully!
+
+
+======================================================================
+FAIL: test_malformed_initialization_and_wire_rejected (test_startup_controls.StartupControls.test_malformed_initialization_and_wire_rejected) (mode='bad-initialize')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 87, in test_malformed_initialization_and_wire_rejected
+    self.assert_rejected(self.run_smoke(fake=mode))
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 49, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+AssertionError: 0 != 1 : Starting MCP server through <TEMP>/.mcp.json...
+-> {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2024-11-05"}}
+<- {"jsonrpc": "2.0", "id": 1, "result": []}
+-> {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}
+Available tools: ['validate_sysml_file', 'query_library', 'get_library_element', 'dump_model']
+-> {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "query_library", "arguments": {"query": "mass"}}}
+<- {"jsonrpc": "2.0", "id": 3, "result": {"content": [{"type": "text", "text": "[{\"name\": \"MassValue\", \"qualified_name\": \"ISQBase::MassValue\", \"package\": \"ISQBase\", \"kind\": \"attribute def\", \"declaration\": \"attribute def MassValue :> ScalarQuantityValue {\", \"file\": \"fixture.sysml\", \"line\": 2}]"}]}}
+
+SUCCESS: MCP server started, initialized, and resolved standard library OOB successfully!
+
+
+======================================================================
+FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='empty')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 79, in test_malformed_or_unrelated_tool_results_rejected
+    self.assert_rejected(self.run_smoke(fake=mode))
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 49, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+AssertionError: 0 != 1 : Starting MCP server through <TEMP>/.mcp.json...
+-> {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2024-11-05"}}
+<- {"jsonrpc": "2.0", "id": 1, "result": {"protocolVersion": "2024-11-05", "capabilities": {"tools": {}}, "serverInfo": {"name": "synthetic", "version": "0"}}}
+-> {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}
+Available tools: ['validate_sysml_file', 'query_library', 'get_library_element', 'dump_model']
+-> {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "query_library", "arguments": {"query": "mass"}}}
+<- {"jsonrpc": "2.0", "id": 3, "result": {"content": [{"type": "text", "text": "[]"}]}}
+
+SUCCESS: MCP server started, initialized, and resolved standard library OOB successfully!
+
+
+======================================================================
+FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='unrelated')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 79, in test_malformed_or_unrelated_tool_results_rejected
+    self.assert_rejected(self.run_smoke(fake=mode))
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 49, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+AssertionError: 0 != 1 : Starting MCP server through <TEMP>/.mcp.json...
+-> {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2024-11-05"}}
+<- {"jsonrpc": "2.0", "id": 1, "result": {"protocolVersion": "2024-11-05", "capabilities": {"tools": {}}, "serverInfo": {"name": "synthetic", "version": "0"}}}
+-> {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}
+Available tools: ['validate_sysml_file', 'query_library', 'get_library_element', 'dump_model']
+-> {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "query_library", "arguments": {"query": "mass"}}}
+<- {"jsonrpc": "2.0", "id": 3, "result": {"content": [{"type": "text", "text": "[{\"name\": \"MassValue\", \"qualified_name\": \"Fixture::MassValue\", \"package\": \"ISQBase\", \"kind\": \"attribute def\", \"declaration\": \"attribute def MassValue :> ScalarQuantityValue {\", \"file\": \"fixture.sysml\", \"line\": 2}]"}]}}
+
+SUCCESS: MCP server started, initialized, and resolved standard library OOB successfully!
+
+
+======================================================================
+FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='wrong-kind')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 79, in test_malformed_or_unrelated_tool_results_rejected
+    self.assert_rejected(self.run_smoke(fake=mode))
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 49, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+AssertionError: 0 != 1 : Starting MCP server through <TEMP>/.mcp.json...
+-> {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2024-11-05"}}
+<- {"jsonrpc": "2.0", "id": 1, "result": {"protocolVersion": "2024-11-05", "capabilities": {"tools": {}}, "serverInfo": {"name": "synthetic", "version": "0"}}}
+-> {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}
+Available tools: ['validate_sysml_file', 'query_library', 'get_library_element', 'dump_model']
+-> {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "query_library", "arguments": {"query": "mass"}}}
+<- {"jsonrpc": "2.0", "id": 3, "result": {"content": [{"type": "text", "text": "[{\"name\": \"MassValue\", \"qualified_name\": \"ISQBase::MassValue\", \"package\": \"ISQBase\", \"kind\": \"attribute\", \"declaration\": \"attribute def MassValue :> ScalarQuantityValue {\", \"file\": \"fixture.sysml\", \"line\": 2}]"}]}}
+
+SUCCESS: MCP server started, initialized, and resolved standard library OOB successfully!
+
+
+======================================================================
+FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='wrong-declaration')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 79, in test_malformed_or_unrelated_tool_results_rejected
+    self.assert_rejected(self.run_smoke(fake=mode))
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 49, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+AssertionError: 0 != 1 : Starting MCP server through <TEMP>/.mcp.json...
+-> {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2024-11-05"}}
+<- {"jsonrpc": "2.0", "id": 1, "result": {"protocolVersion": "2024-11-05", "capabilities": {"tools": {}}, "serverInfo": {"name": "synthetic", "version": "0"}}}
+-> {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}
+Available tools: ['validate_sysml_file', 'query_library', 'get_library_element', 'dump_model']
+-> {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "query_library", "arguments": {"query": "mass"}}}
+<- {"jsonrpc": "2.0", "id": 3, "result": {"content": [{"type": "text", "text": "[{\"name\": \"MassValue\", \"qualified_name\": \"ISQBase::MassValue\", \"package\": \"ISQBase\", \"kind\": \"attribute def\", \"declaration\": \"attribute MassValue;\", \"file\": \"fixture.sysml\", \"line\": 2}]"}]}}
+
+SUCCESS: MCP server started, initialized, and resolved standard library OOB successfully!
+
+
+======================================================================
+FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='malformed-item')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 79, in test_malformed_or_unrelated_tool_results_rejected
+    self.assert_rejected(self.run_smoke(fake=mode))
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 49, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+AssertionError: 0 != 1 : Starting MCP server through <TEMP>/.mcp.json...
+-> {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2024-11-05"}}
+<- {"jsonrpc": "2.0", "id": 1, "result": {"protocolVersion": "2024-11-05", "capabilities": {"tools": {}}, "serverInfo": {"name": "synthetic", "version": "0"}}}
+-> {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}
+Available tools: ['validate_sysml_file', 'query_library', 'get_library_element', 'dump_model']
+-> {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "query_library", "arguments": {"query": "mass"}}}
+<- {"jsonrpc": "2.0", "id": 3, "result": {"content": [{"type": "text", "text": "[42]"}]}}
+
+SUCCESS: MCP server started, initialized, and resolved standard library OOB successfully!
+
+
+======================================================================
+FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='invalid-json-text')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 79, in test_malformed_or_unrelated_tool_results_rejected
+    self.assert_rejected(self.run_smoke(fake=mode))
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 49, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+AssertionError: 0 != 1 : Starting MCP server through <TEMP>/.mcp.json...
+-> {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2024-11-05"}}
+<- {"jsonrpc": "2.0", "id": 1, "result": {"protocolVersion": "2024-11-05", "capabilities": {"tools": {}}, "serverInfo": {"name": "synthetic", "version": "0"}}}
+-> {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}
+Available tools: ['validate_sysml_file', 'query_library', 'get_library_element', 'dump_model']
+-> {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "query_library", "arguments": {"query": "mass"}}}
+<- {"jsonrpc": "2.0", "id": 3, "result": {"content": [{"type": "text", "text": "not-json"}]}}
+
+SUCCESS: MCP server started, initialized, and resolved standard library OOB successfully!
+
+
+======================================================================
+FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='missing-content')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 79, in test_malformed_or_unrelated_tool_results_rejected
+    self.assert_rejected(self.run_smoke(fake=mode))
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 49, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+AssertionError: 0 != 1 : Starting MCP server through <TEMP>/.mcp.json...
+-> {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2024-11-05"}}
+<- {"jsonrpc": "2.0", "id": 1, "result": {"protocolVersion": "2024-11-05", "capabilities": {"tools": {}}, "serverInfo": {"name": "synthetic", "version": "0"}}}
+-> {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}
+Available tools: ['validate_sysml_file', 'query_library', 'get_library_element', 'dump_model']
+-> {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "query_library", "arguments": {"query": "mass"}}}
+<- {"jsonrpc": "2.0", "id": 3, "result": {}}
+
+SUCCESS: MCP server started, initialized, and resolved standard library OOB successfully!
+
+
+======================================================================
+FAIL: test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) (mode='structured-only')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 79, in test_malformed_or_unrelated_tool_results_rejected
+    self.assert_rejected(self.run_smoke(fake=mode))
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 49, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+AssertionError: 0 != 1 : Starting MCP server through <TEMP>/.mcp.json...
+-> {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2024-11-05"}}
+<- {"jsonrpc": "2.0", "id": 1, "result": {"protocolVersion": "2024-11-05", "capabilities": {"tools": {}}, "serverInfo": {"name": "synthetic", "version": "0"}}}
+-> {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}
+Available tools: ['validate_sysml_file', 'query_library', 'get_library_element', 'dump_model']
+-> {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "query_library", "arguments": {"query": "mass"}}}
+<- {"jsonrpc": "2.0", "id": 3, "result": {"structuredContent": {"items": [{"name": "MassValue", "qualified_name": "ISQBase::MassValue", "package": "ISQBase", "kind": "attribute def", "declaration": "attribute def MassValue :> ScalarQuantityValue {", "file": "fixture.sysml", "line": 2}]}}}
+
+SUCCESS: MCP server started, initialized, and resolved standard library OOB successfully!
+
+
+======================================================================
+FAIL: test_missing_expected_tool_rejected (test_startup_controls.StartupControls.test_missing_expected_tool_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 82, in test_missing_expected_tool_rejected
+    self.assert_rejected(self.run_smoke(fake='missing-tool'))
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 49, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+AssertionError: 0 != 1 : Starting MCP server through <TEMP>/.mcp.json...
+-> {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2024-11-05"}}
+<- {"jsonrpc": "2.0", "id": 1, "result": {"protocolVersion": "2024-11-05", "capabilities": {"tools": {}}, "serverInfo": {"name": "synthetic", "version": "0"}}}
+-> {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}
+Available tools: ['validate_sysml_file', 'get_library_element', 'dump_model']
+-> {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "query_library", "arguments": {"query": "mass"}}}
+<- {"jsonrpc": "2.0", "id": 3, "result": {"content": [{"type": "text", "text": "[{\"name\": \"MassValue\", \"qualified_name\": \"ISQBase::MassValue\", \"package\": \"ISQBase\", \"kind\": \"attribute def\", \"declaration\": \"attribute def MassValue :> ScalarQuantityValue {\", \"file\": \"fixture.sysml\", \"line\": 2}]"}]}}
+
+SUCCESS: MCP server started, initialized, and resolved standard library OOB successfully!
+
+
+======================================================================
+FAIL: test_reference_element_index_fixture_passes_without_compiler_claim (test_startup_controls.StartupControls.test_reference_element_index_fixture_passes_without_compiler_claim)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 71, in test_reference_element_index_fixture_passes_without_compiler_claim
+    self.assertIn('Compiler validation: NOT_RUN', result.stdout)
+AssertionError: 'Compiler validation: NOT_RUN' not found in 'Starting MCP server through <TEMP>/.mcp.json...\n-> {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2024-11-05"}}\n<- {"jsonrpc": "2.0", "id": 1, "result": {"protocolVersion": "2024-11-05", "capabilities": {"tools": {}}, "serverInfo": {"name": "sysml", "version": "0.4.2"}}}\n-> {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}\n<- {"jsonrpc": "2.0", "id": 2, "result": {"tools": [{"name": "validate_sysml_file", "description": "Validate a textual SysML v2 model against the standard library and return diagnostics. Provide either `content` (raw .sysml text) or `path` (an existing .sysml file). `context_paths` lists sibling .sysml files the model imports, so cross-file references resolve without false \'unresolved reference\' errors (only the target\'s diagnostics are reported). Returns {ok, diagnostics:[{line, column, severity, code, syntax, message}]}. `ok` is true when there are no ERROR diagnostics. Use line/column to fix each issue, then re-validate \\u2014 this is the self-correction loop.", "inputSchema": {"type": "object", "properties": {"content": {"type": "string", "description": "Raw .sysml source text"}, "path": {"type": "string", "description": "Path to an existing .sysml file"}, "context_paths": {"type": "array", "items": {"type": "string"}, "description": "Sibling .sysml files the model depends on"}}}}, {"name": "query_library", "description": "Search the SysML v2 standard library for elements matching a name or keyword. Use this BEFORE referencing any standard type, quantity, or unit so you cite a real qualified name (e.g. \'mass\' \\u2192 ISQBase::MassValue, \'newton\' \\u2192 SI::newton, \'Real\' \\u2192 ScalarValues::Real) instead of inventing one. Returns a ranked list of {name, qualified_name, kind, package, file, line, declaration}.", "inputSchema": {"type": "object", "properties": {"query": {"type": "string", "description": "Name or keyword to search for"}, "limit": {"type": "integer", "description": "Max results (default 25)"}}, "required": ["query"]}}, {"name": "get_library_element", "description": "Return the declaration of a specific standard-library element by qualified name (e.g. \'ISQBase::MassValue\', \'SI::newton\'). Returns the element with a declaration excerpt, or null if not found. Use after query_library to inspect an element\'s definition.", "inputSchema": {"type": "object", "properties": {"qualified_name": {"type": "string"}}, "required": ["qualified_name"]}}, {"name": "dump_model", "description": "Parse a SysML v2 model and return its AST as a structured JSON array of elements. Provide either `content` (raw .sysml text) or `path` (an existing .sysml file). `context_paths` lists sibling .sysml files the model imports. Returns {ok, elements:[...]} on success, or {ok, diagnostics:[...]} if there are parse errors.", "inputSchema": {"type": "object", "properties": {"content": {"type": "string", "description": "Raw .sysml source text"}, "path": {"type": "string", "description": "Path to an existing .sysml file"}, "context_paths": {"type": "array", "items": {"type": "string"}, "description": "Sibling .sysml files the model depends on"}}}}]}}\nAvailable tools: [\'validate_sysml_file\', \'query_library\', \'get_library_element\', \'dump_model\']\n-> {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "query_library", "arguments": {"query": "mass"}}}\n<- {"jsonrpc": "2.0", "id": 3, "result": {"content": [{"type": "text", "text": "[{\\"name\\": \\"MassValue\\", \\"qualified_name\\": \\"ISQBase::MassValue\\", \\"kind\\": \\"attribute def\\", \\"package\\": \\"ISQBase\\", \\"file\\": \\"fixture.sysml\\", \\"line\\": 2, \\"declaration\\": \\"    attribute def MassValue :> ScalarQuantityValue {\\\\n    }\\\\n}\\"}]"}]}}\n\nSUCCESS: MCP server started, initialized, and resolved standard library OOB successfully!\n'
+
+======================================================================
+FAIL: test_silent_and_partial_line_timeout_reaps_child (test_startup_controls.StartupControls.test_silent_and_partial_line_timeout_reaps_child) (mode='silent')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 104, in test_silent_and_partial_line_timeout_reaps_child
+    self.assertIn('Timeout', result.stderr)
+AssertionError: 'Timeout' not found in 'Traceback (most recent call last):\n  File "<string>", line 1, in <module>\nTypeError: main() got an unexpected keyword argument \'response_timeout\'\n'
+
+======================================================================
+FAIL: test_silent_and_partial_line_timeout_reaps_child (test_startup_controls.StartupControls.test_silent_and_partial_line_timeout_reaps_child) (mode='partial')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 104, in test_silent_and_partial_line_timeout_reaps_child
+    self.assertIn('Timeout', result.stderr)
+AssertionError: 'Timeout' not found in 'Traceback (most recent call last):\n  File "<string>", line 1, in <module>\nTypeError: main() got an unexpected keyword argument \'response_timeout\'\n'
+
+======================================================================
+FAIL: test_stderr_cannot_block_startup (test_startup_controls.StartupControls.test_stderr_cannot_block_startup)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 110, in test_stderr_cannot_block_startup
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+AssertionError: 1 != 0 : Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+TypeError: main() got an unexpected keyword argument 'response_timeout'
+
+
+======================================================================
+FAIL: test_unrelated_nonempty_mass_hit_rejected (test_startup_controls.StartupControls.test_unrelated_nonempty_mass_hit_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 63, in test_unrelated_nonempty_mass_hit_rejected
+    self.assert_rejected(self.run_smoke())
+  File "<CHECKOUT>/tests/test_startup_controls.py", line 49, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+AssertionError: 0 != 1 : Starting MCP server through <TEMP>/.mcp.json...
+-> {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2024-11-05"}}
+<- {"jsonrpc": "2.0", "id": 1, "result": {"protocolVersion": "2024-11-05", "capabilities": {"tools": {}}, "serverInfo": {"name": "sysml", "version": "0.4.2"}}}
+-> {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}
+Available tools: ['validate_sysml_file', 'query_library', 'get_library_element', 'dump_model']
+-> {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "query_library", "arguments": {"query": "mass"}}}
+<- {"jsonrpc": "2.0", "id": 3, "result": {"content": [{"type": "text", "text": "[{\"name\": \"MassValue\", \"qualified_name\": \"Fixture::MassValue\", \"kind\": \"attribute def\", \"package\": \"Fixture\", \"file\": \"unrelated.sysml\", \"line\": 2, \"declaration\": \"    attribute def MassValue;\\n}\"}]"}]}}
+
+SUCCESS: MCP server started, initialized, and resolved standard library OOB successfully!
+
+
+----------------------------------------------------------------------
+Ran 10 tests in 6.166s
+
+FAILED (failures=19, errors=1)

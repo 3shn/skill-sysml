@@ -1,0 +1,13 @@
+{
+  "exit": 0,
+  "expected_exit": 0,
+  "library_commit": "9baca5908ca28b53da085de69336fde48420ea8f",
+  "library_file_sha256": "cc5dc730d2a7167e914431a6f12d0318f792a5c6e2a204a37df9ab33f5e98435",
+  "startup_source_sha256": "756646946d46d2260971f4bc6e0f55de642df29cdd67ea9fba2764f5d414b118",
+  "scope": "real pinned library + MCP, compiler NOT_RUN",
+  "success_lines": [
+    "SUCCESS: MCP startup and library-index lookup ISQBase::MassValue passed.",
+    "Compiler validation: NOT_RUN (not part of this smoke)."
+  ],
+  "source_commit": "1f5edbf0ee661ec1258b9dd9fcb33d855f5e6660"
+}

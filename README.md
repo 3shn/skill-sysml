@@ -61,3 +61,18 @@ connected. The Java validator also auto-compiles on first use if `setup.sh` wasn
 - The full standard library and the kernel jar are **referenced by path**, not vendored — they are
   large and carry the upstream copyright-holders' license. Only small grounding assets (curated
   syntax reference, BNF grammar, example models) are bundled in the skill.
+
+### Startup health and compiler checks
+
+`python3 tests/test_mcp_startup.py` checks MCP initialization, the expected tools, and the
+library-index declaration `ISQBase::MassValue` (`attribute def`) from the pinned official
+library. Empty/unrelated search results and malformed responses fail the smoke. It uses the
+existing `.mcp.json` launch and shared `SYSML_RUNTIME`, and explicitly reports compiler
+validation as `NOT_RUN`: an index lookup cannot prove that Java or a model compiles.
+
+Run `python3 -m unittest discover -s tests -p test_startup_controls.py -v` for isolated
+regressions without Java/network access. The positive test fixture is a minimal declaration
+matching [ISQBase.sysml at the pinned library revision](https://github.com/Systems-Modeling/SysML-v2-Release/blob/9baca5908ca28b53da085de69336fde48420ea8f/sysml.library/Domain%20Libraries/Quantities%20and%20Units/ISQBase.sysml#L66),
+not a bundled standard library or compiler fixture. CI separately provisions the real runtime
+and checks that a valid model passes and a broken model fails. No library/MCP/compiler protocol
+semantics are changed by this smoke check.
