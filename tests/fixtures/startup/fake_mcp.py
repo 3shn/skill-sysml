@@ -23,7 +23,7 @@ for line in sys.stdin:
         break
     if mode == 'malformed-wire':
         print('{bad json}', flush=True)
-        continue
+        break
     if mode == 'stderr-flood':
         sys.stderr.write('x' * 262144); sys.stderr.flush()
     method = request['method']
