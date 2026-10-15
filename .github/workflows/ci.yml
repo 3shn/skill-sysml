@@ -22,6 +22,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Startup health regression controls (no Java required)
+        run: python3 -m unittest discover -s tests -p test_startup_controls.py -v
+
       - name: Provision resources + compile validator
         run: bash mcp-server/setup.sh
 
