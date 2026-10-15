@@ -1,0 +1,25 @@
+{
+  "source_commit": "08f4ede00cbb33fba59d92f28f6fbd9eef09f32e",
+  "python": "3.12.14",
+  "file_sha256": {
+    "tests/test_mcp_startup.py": "cce11d25aa3304b35d3051441ddf68cdfcf32ec8aa38c1d9f8d569a586fa5aa0",
+    "tests/test_startup_controls.py": "7bdc0677c033ae444684ef915a9bd904d0cabb4b53d5707c9f238b43a9f9c9c8",
+    "tests/fixtures/startup/fake_mcp.py": "0a6b5bfb8abd9c814af8e0941a90d6937a222bff47a115cbb1377fd1842ccf4d",
+    "tests/fixtures/startup/expected-element.sysml": "18efe9014ef9ae2b3fb712c064b9403965a4f6585e6a7cde7ac90708c64084c1",
+    "mcp-server/server.py": "ff981934b871fd3b683175592e411aa9a73fde08a276f005f1d6dc9e89b092f9",
+    "mcp-server/library_index.py": "fe93ac00d86e13eaddca2086ea0371dbaaf709ae1dfb3767f13fb6e843000776"
+  },
+  "log_sha256": {
+    "baseline-empty.json": "c1e3417990fdd4b600568a282681dd9908c9ae9a6f704b99b792f314d74d36c0",
+    "consumer.json": "c674d5c234115002e3b329511ebc1748bee743c44e36730d892354ad3c3c3a82",
+    "mutation.json": "ea4071d1504e0794a1bdf478c5d660ad41a1498d21bfd2a35cca111bf2893dd3",
+    "official-library-original.txt": "07693dc54da4963fc957ff20ba20bbe633d44814219232ffa825b152d66e475b",
+    "red-original.txt": "23e71e3ae6c3883b74aa2a68c9d9ae312330e02125159882468a2c8c18c1ca94",
+    "red-corrected-original.txt": "b85af39abc216107d21a908f6330dba3d990cd8f44017728bededb4ce601d957",
+    "red-binding.json": "1b801bb3bc083723ae2afe44d33d15eaa9b510a26900eea9dac41fe3dca67005",
+    "full-local-original.txt": "3652420bbfa0ec13c31e3059b8215a0e253bbccc04d2bab0e2cd08b861c98920",
+    "green-original.txt": "aa54b634c131b6e6eff50c6695f4523594dbb4143aedef67c590a9882da00c7e",
+    "official-library.json": "ef303b98bb3004d762ca78c1880ae073a60e8574233abf90d32969e7e57a17d5",
+    "baseline-empty-original.txt": "81a1488d947b3e440dd9d8becee578b0f31f5b4fcc4a6309d4560559f2d1ee73"
+  }
+}

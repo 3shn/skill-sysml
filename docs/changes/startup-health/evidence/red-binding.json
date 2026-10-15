@@ -1,0 +1,11 @@
+{
+  "source_commit": "3d54c16dee07d6c12f32b63de9670dd850b66fae",
+  "baseline": "eaff43723b7c3975466fd7b36f4b799e9b43838a",
+  "python": "3.12.14",
+  "files": {
+    "tests/test_mcp_startup.py": "ab19ba6b33a80b19d38ff7b007d701ca190ccab56be1b78ef815b98227a2c9f9",
+    "tests/test_startup_controls.py": "7bdc0677c033ae444684ef915a9bd904d0cabb4b53d5707c9f238b43a9f9c9c8",
+    "tests/fixtures/startup/fake_mcp.py": "0a6b5bfb8abd9c814af8e0941a90d6937a222bff47a115cbb1377fd1842ccf4d",
+    "tests/fixtures/startup/expected-element.sysml": "18efe9014ef9ae2b3fb712c064b9403965a4f6585e6a7cde7ac90708c64084c1"
+  }
+}

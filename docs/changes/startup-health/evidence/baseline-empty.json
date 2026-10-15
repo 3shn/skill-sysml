@@ -1,0 +1,20 @@
+{
+  "source_commit": "2d1debbc96046013a8a4b4cae285a992e7729c74",
+  "startup_source_sha256": "ab19ba6b33a80b19d38ff7b007d701ca190ccab56be1b78ef815b98227a2c9f9",
+  "command": [
+    "python3",
+    "tests/test_mcp_startup.py"
+  ],
+  "controlled_runtime": "existing empty sysml.library",
+  "exit": 0,
+  "expected_existing_exit": 0,
+  "library_query_result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "[]"
+      }
+    ]
+  },
+  "observed_success_line": "SUCCESS: MCP server started, initialized, and resolved standard library OOB successfully!"
+}

@@ -1,0 +1,15 @@
+test_child_reaped_after_success_and_rejection (test_startup_controls.StartupControls.test_child_reaped_after_success_and_rejection) ... ok
+test_existing_empty_directory_rejected (test_startup_controls.StartupControls.test_existing_empty_directory_rejected) ... ok
+test_malformed_initialization_and_wire_rejected (test_startup_controls.StartupControls.test_malformed_initialization_and_wire_rejected) ... ok
+test_malformed_or_unrelated_tool_results_rejected (test_startup_controls.StartupControls.test_malformed_or_unrelated_tool_results_rejected) ... ok
+test_missing_directory_rejected (test_startup_controls.StartupControls.test_missing_directory_rejected) ... ok
+test_missing_expected_tool_rejected (test_startup_controls.StartupControls.test_missing_expected_tool_rejected) ... ok
+test_reference_element_index_fixture_passes_without_compiler_claim (test_startup_controls.StartupControls.test_reference_element_index_fixture_passes_without_compiler_claim) ... ok
+test_silent_and_partial_line_timeout_reaps_child (test_startup_controls.StartupControls.test_silent_and_partial_line_timeout_reaps_child) ... ok
+test_stderr_cannot_block_startup (test_startup_controls.StartupControls.test_stderr_cannot_block_startup) ... ok
+test_unrelated_nonempty_mass_hit_rejected (test_startup_controls.StartupControls.test_unrelated_nonempty_mass_hit_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 1.779s
+
+OK

@@ -1,0 +1,42 @@
+{
+  "python": "3.12.14",
+  "product_commit": "08f4ede00cbb33fba59d92f28f6fbd9eef09f32e",
+  "plan_commit": "2d1debbc96046013a8a4b4cae285a992e7729c74",
+  "initial_red_commit": "2ffee452111f3e342db18fbecd63352e0eabd1c1",
+  "corrected_red_commit": "3d54c16dee07d6c12f32b63de9670dd850b66fae",
+  "commands": {
+    "red_green": "python3 -m unittest discover -s tests -p test_startup_controls.py -v",
+    "full_local": "PYTHONPATH=<isolated pytest8.4.2> SYSML_RUNTIME=<scratch no-compiler> python3 -m pytest tests evals -q",
+    "official_library": "SYSML_RUNTIME=<scratch symlink to pinned official library> python3 tests/test_mcp_startup.py",
+    "consumer": "python3 docs/changes/startup-health/consumer_probe.py --toolchain <read-only pinned toolchain checkout>",
+    "mutation": "python3 docs/changes/startup-health/mutation_probe.py"
+  },
+  "sanitization": "Published excerpts are separately generated: remove repeated tool-schema response lines, normalize scratch/checkout paths and trailing whitespace. Full-local output is an explicit failure summary; baseline is an extracted response/success summary. Originals remain local with distinct hashes. No event bodies or credentials.",
+  "originals": {
+    "baseline-empty-original.txt": "81a1488d947b3e440dd9d8becee578b0f31f5b4fcc4a6309d4560559f2d1ee73",
+    "baseline-empty.json": "c1e3417990fdd4b600568a282681dd9908c9ae9a6f704b99b792f314d74d36c0",
+    "consumer.json": "c674d5c234115002e3b329511ebc1748bee743c44e36730d892354ad3c3c3a82",
+    "full-local-original.txt": "3652420bbfa0ec13c31e3059b8215a0e253bbccc04d2bab0e2cd08b861c98920",
+    "green-original.txt": "aa54b634c131b6e6eff50c6695f4523594dbb4143aedef67c590a9882da00c7e",
+    "mutation.json": "ea4071d1504e0794a1bdf478c5d660ad41a1498d21bfd2a35cca111bf2893dd3",
+    "official-library-original.txt": "07693dc54da4963fc957ff20ba20bbe633d44814219232ffa825b152d66e475b",
+    "official-library.json": "ef303b98bb3004d762ca78c1880ae073a60e8574233abf90d32969e7e57a17d5",
+    "red-binding.json": "1b801bb3bc083723ae2afe44d33d15eaa9b510a26900eea9dac41fe3dca67005",
+    "red-corrected-original.txt": "b85af39abc216107d21a908f6330dba3d990cd8f44017728bededb4ce601d957",
+    "red-original.txt": "23e71e3ae6c3883b74aa2a68c9d9ae312330e02125159882468a2c8c18c1ca94",
+    "verification-binding.json": "2bf2ddcefc416afe671b9707c08380c6f610b495424efca07b8b3f6abdccb9aa"
+  },
+  "published": {
+    "baseline-empty.json": "dbf608e771343217e778fbc7aa84f2c81a4e3dd4fe8c0a1304828cd057f778fd",
+    "consumer.json": "c674d5c234115002e3b329511ebc1748bee743c44e36730d892354ad3c3c3a82",
+    "full-local.txt": "43bb4b3b933d553da1b0456cd1b54444596846569f7aaa8496d2b077c7a4a3b5",
+    "green.txt": "aa54b634c131b6e6eff50c6695f4523594dbb4143aedef67c590a9882da00c7e",
+    "hosted-implementation.json": "fb606affb9e41859693e7181244337652d121399bcc69f8dba4c80088e987c86",
+    "mutation.json": "ea4071d1504e0794a1bdf478c5d660ad41a1498d21bfd2a35cca111bf2893dd3",
+    "official-library.json": "ef303b98bb3004d762ca78c1880ae073a60e8574233abf90d32969e7e57a17d5",
+    "red-binding.json": "1b801bb3bc083723ae2afe44d33d15eaa9b510a26900eea9dac41fe3dca67005",
+    "red-initial.txt": "2f03d1d2b6296703adc8bf4d4055375a59f3669a6eef2d9e5ba8ab3aa0a57b24",
+    "red.txt": "a853be30833ce34f7f62916edf2791c201083b89ad033a4f5c34c92b349e2e73",
+    "verification-binding.json": "2bf2ddcefc416afe671b9707c08380c6f610b495424efca07b8b3f6abdccb9aa"
+  }
+}
